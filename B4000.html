@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FerroFish B4000+ Web Editor</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" />
+    <link href="style/B4000style.css" rel="stylesheet" />
+    <script src="./script/ccynthmata.js" type="text/javascript"></script>
+    <script src="./res/init_patch.js" type="text/javascript"></script>
+    <script>
+        // parameter display transforms:
+        let Doubler = (value) => value === 127 ? 255 : value * 2;
+        let Hundred = (value) => value === 127 ? 100 : Math.round(Math.round(((value - 64) / 64 * 200)) / 2); // yeah, I don't get it either
+        let OnOffer = (value) => value < 64 ? "Off" : "On";
+        let OnetoTen = (value) => value === 127 ? 10 : Math.round(Math.round(((value - 64) / 64 * 20)))
+        let OnetoTwenty = (value) => value === 127 ? 20 : Math.round(Math.round(((value - 64) / 64 * 40)))
+        let OnetoThirty = (value) => value === 127 ? 30 : Math.round(Math.round(((value - 64) / 64 * 60)))
+
+        var cynth;
+        let init = ()=>{
+            cynth = new Ccynthmata(
+                {
+                    initPatch: B4000InitPatch, 
+                    autoHideParameterDisplay: true,
+                        doubler: Doubler,
+                        hundred: Hundred,
+                        onoffer: OnOffer,
+                        onetoten: OnetoTen,
+                        onetotwenty: OnetoTwenty,
+                        onetoThirty: OnetoThirty,
+                }); 
+            cynth.init();
+        }
+        let showHideInstructions = ()=>{
+            let instructions = document.getElementById("instructions");
+            if(instructions.classList.contains("hiddenInstructions")){
+                instructions.classList.remove("hiddenInstructions");
+                instructions.classList.add("shownInstructions");
+            }else{
+                instructions.classList.remove("shownInstructions");
+                instructions.classList.add("hiddenInstructions");
+            }
+        }
+    </script>
+</head>
+<body onload="init()">
+    <div id="title-head">
+            <span>B4000+ Web Editor</span>
+    </div>
+    <div id="title-byline">
+        <span>by Charlie Ruby with a hefty bit of code taken from 
+            <a href="http://oscillatorsink.com">oscillatorsink</a>
+        </span>
+    </div>
+    <div id="subtitle-head">
+        <span>free online editor for the <a href="https://ferrofish-usa.com/b4000_virtual_organ_modeller_with_real_drawbars/">FerroFish B4000+</a>
+            <br>BETA VERSION</span>
+    </div>
+    <div id="main-content">
+        <div class="controlpanel">
+            <div class="controlitemgroup">
+            <h2>Instructions</h2>
+            <div class="showHide"><a href="#" onclick="showHideInstructions()">show / hide</a></div>
+            <div id="instructions" class="hiddenInstructions">
+                <p>This is an editor I tried to make so I can edit parameters of my B4000+ unit in a graphic interface. I am not a coder and I basically copied oscillatorsink's code for the Volca Drum and slowly edited things for my unit.</p>
+                <p>Connect your B4000+ to your chosen MIDI interface or via USB.</p>
+                <p>Select that MIDI interface in the Midi Device Setup (default channel is 1).</p>
+                <p>The settings will be sent to your sound module automatically when the interface is chosen.</p>
+                <p>Make your patch!</p>
+                <p>My preferred way to "save" your patch is by clicking "Create Sharable Patch Link" and saving the link somewhere (and don't forget to share it!).
+                    You can also save a stream of MIDI CC data which can be played back using a DAW etc. by clicking "Save Patch". You can also save the current
+                    state of the patch on your B4000+.</p>
+                <p>Have fun!</p>
+                <p>If you have questions...I am probably not the one to ask, so I would point you to oscillatorsink. You can get hold of him on one of many social media platforms:</p>
+                <ul>
+                    <li><a href="https://www.youtube.com/oscillatorsink">YouTube</a></li>
+                    <li><a href="https://www.facebook.com/OscillatorSink/">Facebook</a></li>
+                    <li><a href="https://twitter.com/oscillatorsink">Twitter</a></li>
+                </ul>
+                <p>This is the library by oscillatorsink I used to build this patch editor here:
+                    <a href="https://github.com/synthmata/ccynthmata">ccynthmata</a></p>
+            </div>
+            </div>
+        </div>
+        <div class="controlpanel">
+            <h2>Setup</h2>
+            <div class="controlflexlayout">
+                <div class="controlitemgroup" id="midiSetup">
+                    <h3>Midi Device Setup</h3>
+                </div>
+                <div class="controlitemgroup" id="saveLoadPanel">
+                    <h3>Save/Load/Export/Share</h3>
+                </div>
+            </div>
+        </div>
+        <div class="controlpanel">
+            <div class="controlitemgroup">
+                <h3>Patch Name</h3>
+                <label for="ccynthmataPatchName" style="display: none">Patch Name</label>
+                <input type="text" id="ccynthmataPatchName" maxlength="64"/>
+            </div>
+        </div>
+
+    <!-- BEGIN: Global Settings-->
+        <div class="controlpanel">
+            <h2>Global Settings</h2>
+            <div class="controlflexlayout">
+                <div class="controlitemgroup">
+                    <h3>Settings</h3>
+                    <div>
+                        <div class="controller">
+                            <label for="Volume">Volume (CC 7)</label>
+                            <input
+                                class="midiccparam" id="Volume"
+                                data-midiChannel="1" data-cclsb="7"
+                                data-displayvaluefunc="doubler"
+                                max="127" min="0" type="range" >
+                        </div>
+                        <div class="controller">
+                            <label for="Tuning">Tuning (CC 43)</label>
+                            <input
+                                class="midiccparam" id="Tuning"
+                                data-midiChannel="1" data-cclsb="43"
+                                data-displayvaluefunc="doubler"
+                                max="127" min="0" type="range" />
+                        </div>
+                        <div class="controller">
+                            <label for="AftertouchThreshold">Aftertouch Threshold (CC 85)</label>
+                            <input
+                                class="midiccparam" id="AftertouchThreshold"
+                                data-midiChannel="1" data-cclsb="85"
+                                data-displayvaluefunc="doubler"
+                                max="127" min="0" type="range" />
+                        </div>
+                        <div class="controller">
+                            <label for="ModwheelThreshold">Modwheel Threshold (CC 88)</label>
+                            <input
+                                class="midiccparam" id="ModwheelThreshold"
+                                data-midiChannel="1" data-cclsb="88"
+                                data-displayvaluefunc="doubler"
+                                max="127" min="0" type="range" />
+                        </div>
+                        <div class="controller">
+                            <label for="Swell">Swell (CC 11)</label>
+                            <input
+                                class="midiccparam" id="Swell"
+                                data-midiChannel="1" data-cclsb="11"
+                                data-displayvaluefunc="doubler"
+                                max="127" min="0" type="range" />
+                        </div>
+                        <div class="radiogroup">
+                            <span>Sustain (CC 64): </span>
+                            <input
+                                type="radio" name="Sus-Toggle" value="127" checked
+                                class="midicctotal" id="Sus-ON"
+                                data-midiChannel="1" data-cclsb="64"/>
+                            <label for="Sus-ON">ON</label>
+                            <input
+                                type="radio" name="Sus-Toggle" value="0"
+                                class="midicctotal" id="Sus-OFF"
+                                data-midiChannel="1" data-cclsb="64"/>
+                            <label for="Sus-OFF">OFF</label>
+                        </div>
+                       
+                    </div>
+                </div>
+        <div class="controlitemgroup">
+            <h3>Sound Shaping</h3>
+            <div class="controller">
+                <label for="Click">Click (CC 41)</label>
+                <input
+                    class="midiccparam" id="Click"
+                    data-midiChannel="1" data-cclsb="41"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+            </div>
+            <div class="controller">
+                <label for="Crunch">Crunch (CC 45)</label>
+                <input
+                    class="midiccparam" id="Crunch"
+                    data-midiChannel="1" data-cclsb="45"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+            </div>
+            <div class="controller">
+                <label for="Drive">Drive (CC 52)</label>
+                <input
+                    class="midiccparam" id="Drive"
+                    data-midiChannel="1" data-cclsb="52"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+            </div>
+            <div class="controller">
+                <label for="Condition">Condition (CC 42)</label>
+                <input
+                    class="midiccparam" id="Condition"
+                    data-midiChannel="1" data-cclsb="42"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+            </div>
+            <div class="controller">
+                <label for="Leakage">Leakage (CC 44)</label>
+                <input
+                    class="midiccparam" id="Leakage"
+                    data-midiChannel="1" data-cclsb="44"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+            </div>
+            <div class="controller">
+                <label for="Trebel">Trebel (CC 54)</label>
+                <input
+                    class="midiccparam" id="Trebel"
+                    data-midiChannel="1" data-cclsb="54"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+            </div>
+            <div class="controller">
+                <label for="Bass">Bass (CC 55)</label>
+                <input
+                    class="midiccparam" id="Bass"
+                    data-midiChannel="1" data-cclsb="55"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+            </div>
+        </div>
+        <div class="controlitemgroup">
+            <h3>Percussion</h3>
+            <div class="radiogroup">
+                <span>Percussion Toggle (CC 40): </span>
+                <input
+                    type="radio" name="Perc-Toggle" value="127" checked
+                    class="midicctotal" id="Perc-Toggle-ON"
+                    data-midiChannel="1" data-cclsb="40"/>
+                <label for="Perc-Toggle-ON">ON</label>
+                <input
+                    type="radio" name="Perc-Toggle" value="0"
+                    class="midicctotal" id="Perc-Toggle-OFF"
+                    data-midiChannel="1" data-cclsb="40"/>
+                <label for="Perc-Toggle-OFF">OFF</label>
+            </div>
+            <div class=controller>
+                <label for="PercLevel">Level (CC 38)</label>
+                <input
+                    class="midiccparam" id="PercLevel"
+                    data-midiChannel="1" data-cclsb="38"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="PercAttack">Attack (CC 108)</label>
+                <input
+                    class="midiccparam" id="PercAttack"
+                    data-midiChannel="1" data-cclsb="108"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="PercDecay">Decay (CC 39)</label>
+                <input
+                    class="midiccparam" id="PercDecay"
+                    data-midiChannel="1" data-cclsb="39"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Harmonic">Harmonic (CC 37)</label>
+                <input
+                    class="midiccparam" id="Harmonic"
+                    data-midiChannel="1" data-cclsb="37"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+            </div>
+        </div>
+        <div class="controlitemgroup">
+            <h3>External Input</h3>
+            <div class=controller>
+                <label for="ExtVol">Volume (CC 86)</label>
+                <input
+                    class="midiccparam" id="ExtVol"
+                    data-midiChannel="1" data-cclsb="86"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Ext1">Pre-Effects (CC 115)</label>
+                <input
+                    class="midiccparam" id="Ext1"
+                    data-midiChannel="1" data-cclsb="115"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Ext2">Post-Rotor/Pre-Reverb (116)</label>
+                <input
+                    class="midiccparam" id="Ext2"
+                    data-midiChannel="1" data-cclsb="116"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Ext3">Post-Reverb/Pre-Compressor (CC 117)</label>
+                <input
+                    class="midiccparam" id="Ext3"
+                    data-midiChannel="1" data-cclsb="117"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Ext4">Post-Effects (CC 118)</label>
+                <input
+                    class="midiccparam" id="ExtVol"
+                    data-midiChannel="1" data-cclsb="118"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END: Global Settings-->
+
+<!-- BEGIN: Rotor-->
+<div class="controlpanel">
+    <h2>Rotary Speaker Settings</h2>
+    <div class="controlflexlayout">
+        <div class="controlitemgroup">
+            <h3>Global Rotary Speaker Settings</h3>
+            <div class="radiogroup">
+                <span>Rotary Speaker Toggle (CC 83): </span>
+                <input
+                    type="radio" name="Rotor-Toggle" value="127" checked
+                    class="midicctotal" id="Rotor-ON"
+                    data-midiChannel="1" data-cclsb="83"/>
+                <label for="Rotor-ON">ON</label>
+                <input
+                    type="radio" name="Rotor-Toggle" value="0"
+                    class="midicctotal" id="Rotor-OFF"
+                    data-midiChannel="1" data-cclsb="83"/>
+                <label for="Rotor-OFF">OFF</label>
+            </div>
+            <div class="radiogroup">
+                <span>Rotary Speaker Speed Toggle (CC 4): </span>
+                <input
+                    type="radio" name="Rotor-Spd-Toggle" value="0" checked
+                    class="midicctotal" id="Rotor-Slow"
+                    data-midiChannel="1" data-cclsb="4"/>
+                <label for="Rotor-Slow">SLOW</label>
+                <input
+                type="radio" name="Rotor-Spd-Toggle" value="64"
+                class="midicctotal" id="Rotor-Medium"
+                data-midiChannel="1" data-cclsb="4"/>
+            <label for="Rotor-Slow">MEDIUM</label>
+                <input
+                    type="radio" name="Rotor-Spd-Toggle" value="127"
+                    class="midicctotal" id="Rotor-Fast"
+                    data-midiChannel="1" data-cclsb="4"/>
+                <label for="Rotor-Fast">FAST</label>
+            </div>
+            <div class="radiogroup">
+                <span>Modwheel and Aftertouch (CC 84): </span>
+                <input
+                    type="radio" name="MW-AT-Toggle" value="127" checked
+                    class="midicctotal" id="MW-AT-ON"
+                    data-midiChannel="1" data-cclsb="84"/>
+                <label for="MW-AT-ON">ON</label>
+                <input
+                    type="radio" name="MW-AT-Toggle" value="0"
+                    class="midicctotal" id="MW-AT-OFF"
+                    data-midiChannel="1" data-cclsb="84"/>
+                <label for="MW-AT-OFF">OFF</label>
+            </div>
+            <div class=controller>
+                <label for="Spread">Microphone Spread (CC 80)</label>
+                <input
+                    class="midiccparam" id="Spread"
+                    data-midiChannel="1" data-cclsb="80
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Balance">Microphone Balance (CC 81)</label>
+                <input
+                    class="midiccparam" id="Balance"
+                    data-midiChannel="1" data-cclsb="81"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Distance">Microphone Distance (CC 62)</label>
+                <input
+                    class="midiccparam" id="Distance"
+                    data-midiChannel="1" data-cclsb="62"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+            </div>
+            </div>
+            <div class="controlitemgroup">
+                <h3>Horn Settings</h3>
+                <div class=controller>
+                    <label for="HornSlow">Horn Slow Speed (CC 70)</label>
+                    <input
+                        class="midiccparam" id="HornSlow"
+                        data-midiChannel="1" data-cclsb="70"
+                        data-displayvaluefunc="OnetoTen"
+                        max="127" min="0" type="range" />
+                </div>
+                <div class=controller>
+                    <label for="HornFast">Horn Fast Speed (CC 71)</label>
+                    <input
+                        class="midiccparam" id="HornFast"
+                        data-midiChannel="1" data-cclsb="71"
+                        data-displayvaluefunc="OnetoTwenty"
+                        max="127" min="0" type="range" />
+                </div>
+                <div class=controller>
+                    <label for="HornAccl">Horn Acceleration (CC 72)</label>
+                    <input
+                        class="midiccparam" id="HornAccl"
+                        data-midiChannel="1" data-cclsb="72"
+                        data-displayvaluefunc="OnetoThirty"
+                        max="127" min="0" type="range" />
+                </div>
+                <div class=controller>
+                    <label for="HornBrake">Horn Brake (CC 73)</label>
+                    <input
+                        class="midiccparam" id="HornBrake"
+                        data-midiChannel="1" data-cclsb="73"
+                        data-displayvaluefunc="OnetoThirty"
+                        max="127" min="0" type="range" />
+                </div>
+                <div class=controller>
+                    <label for="HornTone">Horn Tone (CC 74)</label>
+                    <input
+                        class="midiccparam" id="HornTone"
+                        data-midiChannel="1" data-cclsb="74"
+                        data-displayvaluefunc="doubler"
+                        max="127" min="0" type="range" />
+                </div>
+            </div>
+            <div class="controlitemgroup">
+                <h3>Bass Settings</h3>
+                <div class=controller>
+                    <label for="BassSlow">Bass Slow Speed (CC 75)</label>
+                    <input
+                        class="midiccparam" id="BassSlow"
+                        data-midiChannel="1" data-cclsb="75"
+                        data-displayvaluefunc="doubler"
+                        max="127" min="0" type="range" />
+                </div>
+                <div class=controller>
+                    <label for="BassFast">Bass Fast Speed (CC 76)</label>
+                    <input
+                        class="midiccparam" id="BassFast"
+                        data-midiChannel="1" data-cclsb="76"
+                        data-displayvaluefunc="doubler"
+                        max="127" min="0" type="range" />
+                </div>
+                <div class=controller>
+                    <label for="BassAccl">Bass Acceleration (CC 77)</label>
+                    <input
+                        class="midiccparam" id="BassAccl"
+                        data-midiChannel="1" data-cclsb="77"
+                        data-displayvaluefunc="doubler"
+                        max="127" min="0" type="range" />
+                </div>
+                <div class=controller>
+                    <label for="BassBrake">Bass Brake (CC 78)</label>
+                    <input
+                        class="midiccparam" id="BassBrake"
+                        data-midiChannel="1" data-cclsb="78"
+                        data-displayvaluefunc="doubler"
+                        max="127" min="0" type="range" />
+                </div>
+                <div class=controller>
+                    <label for="BassTone">Bass Tone (CC 79)</label>
+                    <input
+                        class="midiccparam" id="BassBrake"
+                        data-midiChannel="1" data-cclsb="79"
+                        data-displayvaluefunc="doubler"
+                        max="127" min="0" type="range" />
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- END: Rotor-->
+
+<!-- BEGIN: Effects-->
+<div class="controlpanel">
+    <h2>Effects</h2>
+    <div class="controlflexlayout">
+        <div class="controlitemgroup">
+            <h3>Vibrato/Chorus</h3>
+            <div class="radiogroup">
+                <span>Upper Vibrato/Chorus Toggle (CC 50): </span>
+                <input
+                    type="radio" name="Upper-Vib-Toggle" value="127" checked
+                    class="midicctotal" id="Upper-Vib-ON"
+                    data-midiChannel="1" data-cclsb="50"/>
+                <label for="Upper-Vib-ON">ON</label>
+                <input
+                    type="radio" name="Upper-Vib-Toggle" value="0"
+                    class="midicctotal" id="Upper-Vib-OFF"
+                    data-midiChannel="1" data-cclsb="50"/>
+                <label for="Upper-Vib-OFF">OFF</label>
+            </div>
+            <div class="radiogroup">
+                <span>Lower Vibrato/Chorus Toggle (CC 49): </span>
+                <input
+                    type="radio" name="Lower-Vib-Toggle" value="127" checked
+                    class="midicctotal" id="Lower-Vib-ON"
+                    data-midiChannel="1" data-cclsb="49"/>
+                <label for="Lower-Vib-ON">ON</label>
+                <input
+                    type="radio" name="Lower-Vib-Toggle" value="0"
+                    class="midicctotal" id="Lower-Vib-OFF"
+                    data-midiChannel="1" data-cclsb="49"/>
+                <label for="Lower-Vib-OFF">OFF</label>    
+            </div>
+            <div class="radiogroup">
+                <span>Vibrato/Chorus Type (CC 51): </span>
+                <br>
+                <input
+                    type="radio" name="Vib-Type" value="5" checked
+                    class="midicctotal" id="Vib-Type-V1"
+                    data-midiChannel="1" data-cclsb="51"/>
+                <label for="Vib-Type-V1">Vibrato 1</label>
+                <br>
+                <input
+                    type="radio" name="Vib-Type" value="1" checked
+                    class="midicctotal" id="Vib-Type-V2"
+                    data-midiChannel="1" data-cclsb="51"/>
+                <label for="Vib-Type-V2">Vibrato 2</label>
+                <br>
+                <input
+                    type="radio" name="Vib-Type" value="3" checked
+                    class="midicctotal" id="Vib-Type-V3"
+                    data-midiChannel="1" data-cclsb="51"/>
+                <label for="Vib-Type-V3">Vibrato 3</label>
+                <br>
+                <input
+                    type="radio" name="Vib-Type" value="0" checked
+                    class="midicctotal" id="Vib-Type-C1"
+                    data-midiChannel="1" data-cclsb="51"/>
+                <label for="Vib-Type-C1">Chorus 1</label>                
+                <br>
+                <input
+                    type="radio" name="Vib-Type" value="2" checked
+                    class="midicctotal" id="Vib-Type-C2"
+                    data-midiChannel="1" data-cclsb="51"/>
+                <label for="Vib-Type-C2">Chorus 2</label>    
+                <br>
+                <input
+                    type="radio" name="Vib-Type" value="4" checked
+                    class="midicctotal" id="Vib-Type-C3"
+                    data-midiChannel="1" data-cclsb="51"/>
+                <label for="Vib-Type-C2">Chorus 3</label>  
+                <br>
+            </div>
+            </div>
+            <div class="controlitemgroup">
+                <h3>Compressor</h3>
+                <div class="radiogroup">
+                    <span>Compressor Toggle (CC 89): </span>
+                    <input
+                        type="radio" name="Comp-Toggle" value="127" checked
+                        class="midicctotal" id="Comp-ON"
+                        data-midiChannel="1" data-cclsb="89"/>
+                    <label for="Comp-ON">ON</label>
+                    <input
+                        type="radio" name="Comp-Toggle" value="0"
+                        class="midicctotal" id="Comp-OFF"
+                        data-midiChannel="1" data-cclsb="89"/>
+                    <label for="Comp-OFF">OFF</label> 
+                </div>
+                <div class=controller>
+                    <label for="CompGain">Gain (CC 90)</label>
+                    <input
+                        class="midiccparam" id="CompGain"
+                        data-midiChannel="1" data-cclsb="90"
+                        data-displayvaluefunc="doubler"
+                        max="127" min="0" type="range" />
+                </div>
+                <div class=controller>
+                    <label for="CompAmp">Amplitude (CC 91)</label>
+                    <input
+                        class="midiccparam" id="CompAmp"
+                        data-midiChannel="1" data-cclsb="91"
+                        data-displayvaluefunc="doubler"
+                        max="127" min="0" type="range" />
+                </div>
+            </div>
+        </div>
+        <div class="controlitemgroup">
+            <h3>Reverberation</h3>
+            <div class="radiogroup">
+                <span>Reverb Toggle (CC 114): </span>
+                <input
+                    type="radio" name="Rev-Toggle" value="127" checked
+                    class="midicctotal" id="Rev-ON"
+                    data-midiChannel="1" data-cclsb="114"/>
+                <label for="Rev-ON">ON</label>
+                <input
+                    type="radio" name="Rev-Toggle" value="0"
+                    class="midicctotal" id="Rev-OFF"
+                    data-midiChannel="1" data-cclsb="114"/>
+                <label for="Rev-OFF">OFF</label> 
+            </div>
+            <div class=controller>
+                <label for="RevWet">Dry/Wet (CC 110)</label>
+                <input
+                    class="midiccparam" id="RevWet"
+                    data-midiChannel="1" data-cclsb="110"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="RevSize">Size (CC 112)</label>
+                <input
+                    class="midiccparam" id="RevSize"
+                    data-midiChannel="1" data-cclsb="112"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="RevTime">Time (CC 111)</label>
+                <input
+                    class="midiccparam" id="RevTime"
+                    data-midiChannel="1" data-cclsb="111"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="RevDamp">Dampening (CC 113)</label>
+                <input
+                    class="midiccparam" id="RevDamp"
+                    data-midiChannel="1" data-cclsb="113"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+            </div>
+        </div>
+    </div>
+<!-- END: Effects-->
+
+<!-- BEGIN: Upper-->
+<div class="controlpanel">
+    <h2>Upper Register</h2>
+    <div class="controlflexlayout">
+        <div class="controlitemgroup">
+            <h3>Sound Parameters</h3>
+                <div class=controller>
+                    <label for="UpperVolume">Register Volume (CC 56)</label>
+                    <input
+                    class="midiccparam" id="UpperVolume"
+                    data-midiChannel="1" data-cclsb="56"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+                </div>
+                <div class=controller>
+                    <label for="UpperAttack">Register Attack (CC 106)</label>
+                    <input
+                    class="midiccparam" id="UpperAttack"
+                    data-midiChannel="1" data-cclsb="106"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+                </div>
+                <div class=controller>
+                    <label for="UpperRelease">Register Release (CC 107)</label>
+                    <input
+                    class="midiccparam" id="UpperRelease"
+                    data-midiChannel="1" data-cclsb="107"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+                </div>
+            </div>
+            <div class="controlitemgroup">
+                <h3>Register Toggles</h3>
+                <div class="radiogroup">
+                    <span>Velocity Toggle (CC 48): </span>
+                    <label for="Upper-Vel-ON">ON</label>
+                    <input
+                        type="radio" name="Upper-Vel-Toggle" value="127" checked
+                        class="midicctotal" id="Upper-Vel-ON"
+                        data-midiChannel="1" data-cclsb="48"/>
+                    <label for="Upper-Vel-OFF">OFF</label>
+                    <input
+                        type="radio" name="Upper-Vel-Toggle" value="0"
+                        class="midicctotal" id="Upper-Vel-OFF"
+                        data-midiChannel="1" data-cclsb="48"/>
+                </div>
+
+                <div class="radiogroup">
+                    <span>Transient Delay Toggle (CC 67): </span>
+                    <label for="Upper-TransD-ON">ON</label>
+                    <input
+                        type="radio" name="Upper-TransD-Toggle" value="127" checked
+                        class="midicctotal" id="Upper-TransD-ON"
+                        data-midiChannel="1" data-cclsb="67"/>
+                    <label for="Upper-TransD-OFF">OFF</label>
+                    <input
+                        type="radio" name="Upper-TransD-Toggle" value="0"
+                        class="midicctotal" id="Upper-TransD-OFF"
+                        data-midiChannel="1" data-cclsb="67"/>
+                </div>
+        </div>
+        <div class="controlitemgroup">
+            <h2>Drawbars</h2>
+            <div class=controller>
+                <label for="Upper1">1' (CC 36)</label>
+                <input
+                class="midiccparam" id="Upper1"
+                data-midiChannel="1" data-cclsb="36"
+                data-displayvaluefunc="doubler"
+                max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Upper1-1/3">1 1/3' (CC 35)</label>
+                <input
+                class="midiccparam" id="Upper1-1/3"
+                data-midiChannel="1" data-cclsb="35"
+                data-displayvaluefunc="doubler"
+                max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Upper1-3/5">1 3/5' (CC 34)</label>
+                <input
+                class="midiccparam" id="Upper1-3/5"
+                data-midiChannel="1" data-cclsb="34"
+                data-displayvaluefunc="doubler"
+                max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Upper2">2' (CC 33)</label>
+                <input
+                class="midiccparam" id="Upper2"
+                data-midiChannel="1" data-cclsb="33"
+                data-displayvaluefunc="doubler"
+                max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Upper2-2/3">2 2/3' (CC 31)</label>
+                <input
+                class="midiccparam" id="Upper2-2/3"
+                data-midiChannel="1" data-cclsb="31"
+                data-displayvaluefunc="doubler"
+                max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Upper4">4' (CC 30)</label>
+                <input
+                class="midiccparam" id="Upper4"
+                data-midiChannel="1" data-cclsb="30"
+                data-displayvaluefunc="doubler"
+                max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Upper8">8' (CC 29)</label>
+                <input
+                class="midiccparam" id="Upper8"
+                data-midiChannel="1" data-cclsb="27"
+                data-displayvaluefunc="doubler"
+                max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Upper5-1/3">5-1/3' (CC 28)</label>
+                <input
+                class="midiccparam" id="Upper5-1/3"
+                data-midiChannel="1" data-cclsb="28"
+                data-displayvaluefunc="doubler"
+                max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Upper16">16' (CC 27)</label>
+                <input
+                class="midiccparam" id="Upper16"
+                data-midiChannel="1" data-cclsb="27"
+                data-displayvaluefunc="doubler"
+                max="127" min="0" type="range" />
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END: Upper-->
+
+<!-- BEGIN: Lower-->
+<div class="controlpanel">
+    <h2>Lower Register</h2>
+    <div class="controlflexlayout">
+        <div class="controlitemgroup">
+            <h3>Sound Parameters</h3>
+                <div class=controller>
+                    <label for="LowerVolume">Register Volume (CC 57)</label>
+                    <input
+                    class="midiccparam" id="LowerVolume"
+                    data-midiChannel="1" data-cclsb="57"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+                </div>
+                <div class=controller>
+                    <label for="LowerAttack">Register Attack (CC 104)</label>
+                    <input
+                    class="midiccparam" id="LowerAttack"
+                    data-midiChannel="1" data-cclsb="104"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+                </div>
+                <div class=controller>
+                    <label for="LowerRelease">Register Release (CC 105)</label>
+                    <input
+                    class="midiccparam" id="LowerRelease"
+                    data-midiChannel="1" data-cclsb="105"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+                </div>
+            </div>
+            <div class="controlitemgroup">
+                <h3>Register Toggles</h3>
+                <div class="radiogroup">
+                    <span>Velocity Toggle (CC 65): </span>
+                    <label for="Lower-Vel-ON">ON</label>
+                    <input
+                        type="radio" name="Lower-Vel-Toggle" value="127" checked
+                        class="midicctotal" id="Lower-Vel-ON"
+                        data-midiChannel="1" data-cclsb="65"/>
+                    <label for="Lower-Vel-OFF">OFF</label>
+                    <input
+                        type="radio" name="Lower-Vel-Toggle" value="0"
+                        class="midicctotal" id="Lower-Vel-OFF"
+                        data-midiChannel="1" data-cclsb="65"/>
+                </div>
+                <div class="radiogroup">
+                    <span>Transient Delay Toggle (CC 68): </span>
+                    <label for="Lower-TransD-ON">ON</label>
+                    <input
+                        type="radio" name="Lower-TransD-Toggle" value="127" checked
+                        class="midicctotal" id="Lower-TransD-ON"
+                        data-midiChannel="1" data-cclsb="68"/>
+                    <label for="Lower-TransD-OFF">OFF</label>
+                    <input
+                        type="radio" name="Lower-TransD-Toggle" value="0"
+                        class="midicctotal" id="Lower-TransD-OFF"
+                        data-midiChannel="1" data-cclsb="68"/>
+                </div>
+        </div>
+        <div class="controlitemgroup">
+            <h2>Drawbars</h2>
+            <div class=controller>
+                <label for="Lower1">1' (CC 26)</label>
+                <input
+                class="midiccparam" id="Lower1"
+                data-midiChannel="1" data-cclsb="26"
+                data-displayvaluefunc="doubler"
+                max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Lower1-1/3">1 1/3' (CC 25)</label>
+                <input
+                class="midiccparam" id="Lower1-1/3"
+                data-midiChannel="1" data-cclsb="25"
+                data-displayvaluefunc="doubler"
+                max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Lower1-3/5">1 3/5' (CC 24)</label>
+                <input
+                class="midiccparam" id="Lower1-3/5"
+                data-midiChannel="1" data-cclsb="24"
+                data-displayvaluefunc="doubler"
+                max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Lower2">2' (CC 23)</label>
+                <input
+                class="midiccparam" id="Lower2"
+                data-midiChannel="1" data-cclsb="23"
+                data-displayvaluefunc="doubler"
+                max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Lower2-2/3">2 2/3' (CC 22)</label>
+                <input
+                class="midiccparam" id="Lower2-2/3"
+                data-midiChannel="1" data-cclsb="22"
+                data-displayvaluefunc="doubler"
+                max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Lower4">4' (CC 21)</label>
+                <input
+                class="midiccparam" id="Lower4"
+                data-midiChannel="1" data-cclsb="21"
+                data-displayvaluefunc="doubler"
+                max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Lower8">8' (CC 20)</label>
+                <input
+                class="midiccparam" id="Lower8"
+                data-midiChannel="1" data-cclsb="20"
+                data-displayvaluefunc="doubler"
+                max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Lower5-1/3">5-1/3' (CC 19)</label>
+                <input
+                class="midiccparam" id="Lower5-1/3"
+                data-midiChannel="1" data-cclsb="19"
+                data-displayvaluefunc="doubler"
+                max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Lower16">16' (CC 18)</label>
+                <input
+                class="midiccparam" id="Lower16"
+                data-midiChannel="1" data-cclsb="18"
+                data-displayvaluefunc="doubler"
+                max="127" min="0" type="range" />
+            </div>
+            </div>
+        </div>
+    </div>
+<!-- END: Lower-->
+
+<!-- BEGIN: Pedal-->
+<div class="controlpanel">
+    <h2>Pedal Register</h2>
+    <div class="controlflexlayout">
+        <div class="controlitemgroup">
+            <h3>Sound Parameters</h3>
+                <div class=controller>
+                    <label for="PedalVolume">Register Volume (CC 58)</label>
+                    <input
+                    class="midiccparam" id="PedalVolume"
+                    data-midiChannel="1" data-cclsb="58"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+                </div>
+                <div class=controller>
+                    <label for="PedalAttack">Register Attack (CC 102)</label>
+                    <input
+                    class="midiccparam" id="PedalAttack"
+                    data-midiChannel="1" data-cclsb="102"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+                </div>
+                <div class=controller>
+                    <label for="PedalRelease">Register Release (CC 103)</label>
+                    <input
+                    class="midiccparam" id="PedalRelease"
+                    data-midiChannel="1" data-cclsb="103"
+                    data-displayvaluefunc="doubler"
+                    max="127" min="0" type="range" />
+                </div>
+                </div>
+                <div class="controlitemgroup">
+                    <h3>Register Toggles</h3>
+                <div class="radiogroup">
+                    <span>Velocity Toggle (CC 66): </span>
+                    <label for="Pedal-Vel-ON">ON</label>
+                    <input
+                        type="radio" name="Pedal-Vel-Toggle" value="127" checked
+                        class="midicctotal" id="Pedal-Vel-ON"
+                        data-midiChannel="1" data-cclsb="66"/>
+                    <label for="Pedal-Vel-OFF">OFF</label>
+                    <input
+                        type="radio" name="Pedal-Vel-Toggle" value="0"
+                        class="midicctotal" id="Pedal-Vel-OFF"
+                        data-midiChannel="1" data-cclsb="66"/>
+                </div>
+                <div class="radiogroup">
+                    <span>Transient Delay Toggle (CC 69): </span>
+                    <label for="Pedal-TransD-ON">ON</label>
+                    <input
+                        type="radio" name="Pedal-TransD-Toggle" value="127" checked
+                        class="midicctotal" id="Pedal-TransD-ON"
+                        data-midiChannel="1" data-cclsb="69"/>
+                    <label for="Pedal-TransD-OFF">OFF</label>
+                    <input
+                        type="radio" name="Pedal-TransD-Toggle" value="0"
+                        class="midicctotal" id="Pedal-TransD-OFF"
+                        data-midiChannel="1" data-cclsb="69"/>
+                </div>
+                </div>
+        </div>
+        <div class="controlitemgroup">
+            <h2>Drawbars</h2>
+            <div class=controller>
+                <label for="Pedal2">2' (CC 17)</label>
+                <input
+                class="midiccparam" id="Pedal2"
+                data-midiChannel="1" data-cclsb="17"
+                data-displayvaluefunc="doubler"
+                max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Pedal2-2/3">2 2/3' (CC 16)</label>
+                <input
+                class="midiccparam" id="Pedal2-2/3"
+                data-midiChannel="1" data-cclsb="16"
+                data-displayvaluefunc="doubler"
+                max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Pedal4">4' (CC 15)</label>
+                <input
+                class="midiccparam" id="Pedal4"
+                data-midiChannel="1" data-cclsb="15"
+                data-displayvaluefunc="doubler"
+                max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Pedal8">8' (CC 14)</label>
+                <input
+                class="midiccparam" id="Pedal8"
+                data-midiChannel="1" data-cclsb="14"
+                data-displayvaluefunc="doubler"
+                max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Pedal5-1/3">5-1/3' (CC 13)</label>
+                <input
+                class="midiccparam" id="Pedal5-1/3"
+                data-midiChannel="1" data-cclsb="13"
+                data-displayvaluefunc="doubler"
+                max="127" min="0" type="range" />
+            </div>
+            <div class=controller>
+                <label for="Pedal16">16' (CC 12)</label>
+                <input
+                class="midiccparam" id="Pedal16"
+                data-midiChannel="1" data-cclsb="12"
+                data-displayvaluefunc="doubler"
+                max="127" min="0" type="range" />
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END: Pedal-->
+
+    <div id="ccParameterDisplay">100</div>
+</body>
+</html>

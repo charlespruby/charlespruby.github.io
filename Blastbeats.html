@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Twisted Electrons Blastbeats Web Editor</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" />
+    <link href="style/Blastbeatsstyle.css" rel="stylesheet" />
+    <script src="./script/ccynthmata.js" type="text/javascript"></script>
+    <script src="./res/init_patch.js" type="text/javascript"></script>
+    <script>
+        // parameter display transforms:
+        let Doubler = (value) => value === 127 ? 255 : value * 2;
+        let Hundred = (value) => value === 127 ? 100 : Math.round(Math.round(((value - 64) / 64 * 200)) / 2); // yeah, I don't get it either
+        let OnOffer = (value) => value < 64 ? "Off" : "On";
+        let OnetoTen = (value) => value === 127 ? 10 : Math.round(Math.round(((value - 64) / 64 * 20)))
+        let OnetoTwenty = (value) => value === 127 ? 20 : Math.round(Math.round(((value - 64) / 64 * 40)))
+        let OnetoThirty = (value) => value === 127 ? 30 : Math.round(Math.round(((value - 64) / 64 * 60)))
+
+        var cynth;
+        let init = ()=>{
+            cynth = new Ccynthmata(
+                {
+                    initPatch: BlastbeatsInitPatch, 
+                    autoHideParameterDisplay: true,
+                        doubler: Doubler,
+                        hundred: Hundred,
+                        onoffer: OnOffer,
+                        onetoten: OnetoTen,
+                        onetotwenty: OnetoTwenty,
+                        onetoThirty: OnetoThirty,
+                }); 
+            cynth.init();
+        }
+        let showHideInstructions = ()=>{
+            let instructions = document.getElementById("instructions");
+            if(instructions.classList.contains("hiddenInstructions")){
+                instructions.classList.remove("hiddenInstructions");
+                instructions.classList.add("shownInstructions");
+            }else{
+                instructions.classList.remove("shownInstructions");
+                instructions.classList.add("hiddenInstructions");
+            }
+        }
+    </script>
+</head>
+<body onload="init()">
+    <div id="title-head">
+            <span>Blastbeats Web Editor</span>
+    </div>
+    <div id="title-byline">
+        <span>by Charlie Ruby with a hefty bit of code taken from 
+            <a href="http://oscillatorsink.com">oscillatorsink</a>
+        </span>
+    </div>
+    <div id="subtitle-head">
+        <span>free online editor for the <a href="https://www.twistedelectrons.com/blastbeats">Twisted Electrons Blastbeats</a>
+            <br>BETA VERSION</span>
+    </div>
+    <div id="main-content">
+        <div class="controlpanel">
+            <div class="controlitemgroup">
+            <h2>Instructions</h2>
+            <div class="showHide"><a href="#" onclick="showHideInstructions()">show / hide</a></div>
+            <div id="instructions" class="hiddenInstructions">
+                <p>This is to supplement <a href="https://twisted-electrons.com/tool/blastBeats/">the official web editor.</a></p>
+                <p>This is an editor I tried to make so I can edit parameters of my Blastbeats unit in a graphic interface. I am not a coder and I basically copied oscillatorsink's code for the Volca Drum and slowly edited things for my unit.</p>
+                <p>Connect your Blastbeats to your chosen MIDI interface or via USB.</p>
+                <p>Select that MIDI interface in the Midi Device Setup (default channel is 1).</p>
+                <p>The settings will be sent to your sound module automatically when the interface is chosen.</p>
+                <p>Make your patch!</p>
+                <p>My preferred way to "save" your patch is by clicking "Create Sharable Patch Link" and saving the link somewhere (and don't forget to share it!).
+                    You can also save a stream of MIDI CC data which can be played back using a DAW etc. by clicking "Save Patch". You can also save the current
+                    state of the patch on your Blastbeats.</p>
+                <p>Have fun!</p>
+                <p>If you have questions...I am probably not the one to ask, so I would point you to oscillatorsink. You can get hold of him on one of many social media platforms:</p>
+                <ul>
+                    <li><a href="https://www.youtube.com/oscillatorsink">YouTube</a></li>
+                    <li><a href="https://www.facebook.com/OscillatorSink/">Facebook</a></li>
+                    <li><a href="https://twitter.com/oscillatorsink">Twitter</a></li>
+                </ul>
+                <p>This is the library by oscillatorsink I used to build this patch editor here:
+                    <a href="https://github.com/synthmata/ccynthmata">ccynthmata</a></p>
+            </div>
+            </div>
+        </div>
+        <div class="controlpanel">
+            <h2>Setup</h2>
+            <div class="controlflexlayout">
+                <div class="controlitemgroup" id="midiSetup">
+                    <h3>Midi Device Setup</h3>
+                </div>
+                <div class="controlitemgroup" id="saveLoadPanel">
+                    <h3>Save/Load/Export/Share</h3>
+                </div>
+            </div>
+        </div>
+        <div class="controlpanel">
+            <div class="controlitemgroup">
+                <h3>Patch Name</h3>
+                <label for="ccynthmataPatchName" style="display: none">Patch Name</label>
+                <input type="text" id="ccynthmataPatchName" maxlength="64"/>
+            </div>
+        </div>
+
+<!-- BEGIN: Mixer Settings-->
+<div class="controlpanel">
+    <h2>Mixer</h2>
+    <div class="controlflexlayout">
+        <div class="controlitemgroup">
+            <h3>Drums Mixer</h3>
+            <div class="controller">
+                <label for="BassDrumVol">Bass Drum (CC 20)</label>
+                <input
+                    class="midiccparam" id="BassDrumVol"
+                    data-midiChannel="10" data-cclsb="20"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="SnareDrumVol">Snare Drum (CC 34)</label>
+                <input
+                    class="midiccparam" id="SnareDrumVol"
+                    data-midiChannel="10" data-cclsb="34"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="HatsDrumVol">Hats (CC 43)</label>
+                <input
+                    class="midiccparam" id="HatsDrumVol"
+                    data-midiChannel="10" data-cclsb="43"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="TomsDrumVol">Toms (CC 42)</label>
+                <input
+                    class="midiccparam" id="TomsDrumVol"
+                    data-midiChannel="10" data-cclsb="42"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END: Mixer Settings-->
+
+<!-- BEGIN: Drum Settings-->
+<div class="controlpanel">
+    <h2>Drum Settings (Channel 10)</h2>
+    <div class="controlflexlayout">
+        <div class="controlitemgroup">
+            <h3>Bass Drum Carrier Settings</h3>
+            <div class="controller">
+                <label for="Bassdrumcarrierwaveform">Bass drum carrier waveform (CC 21)</label>
+                <input
+                    class="midiccparam" id="Bassdrumcarrierwaveform"
+                    data-midiChannel="10" data-cclsb="21"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Bassdrumcarrierfeedback">Bass drum carrier feedback (CC 22)</label>
+                <input
+                    class="midiccparam" id="Bassdrumcarrierfeedback"
+                    data-midiChannel="10" data-cclsb="22"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Bassdrumcarriermultiplier">Bass drum carrier multiplier (CC 23)</label>
+                <input
+                    class="midiccparam" id="Bassdrumcarriermultiplier"
+                    data-midiChannel="10" data-cclsb="23"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Bassdrumcarriertune">Bass drum carrier tune (CC 24)</label>
+                <input
+                    class="midiccparam" id="Bassdrumcarriertune"
+                    data-midiChannel="10" data-cclsb="24"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Bassdrumcarrierfall">Bass drum carrier fall (CC 25)</label>
+                <input
+                    class="midiccparam" id="Bassdrumcarrierfall"
+                    data-midiChannel="10" data-cclsb="25"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Bassdrumcarrierattack">Bass drum carrier attack (CC 26)</label>
+                <input
+                    class="midiccparam" id="Bassdrumcarrierattack"
+                    data-midiChannel="10" data-cclsb="26"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Bassdrumcarrierdecay">Bass drum carrier decay (CC 27)</label>
+                <input
+                    class="midiccparam" id="Bassdrumcarrierdecay"
+                    data-midiChannel="10" data-cclsb="27"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+
+        </div>
+        <div class="controlitemgroup">
+            <h3>Bass Drum Modulator Settings</h3>
+            <div class="controller">
+                <label for="Bassdrummodulatorvolume">Bass drum modulator volume (CC 28)</label>
+                <input
+                    class="midiccparam" id="Bassdrummodulatorvolume"
+                    data-midiChannel="10" data-cclsb="28"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Bassdrummodulatorwavefor">Bass drum modulator waveform (CC 29)</label>
+                <input
+                    class="midiccparam" id="Bassdrummodulatorwavefor"
+                    data-midiChannel="10" data-cclsb="29"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Bassdrummodulatormultiplier">Bass drum modulator multiplier (CC 30)</label>
+                <input
+                    class="midiccparam" id="Bassdrummodulatormultiplier"
+                    data-midiChannel="10" data-cclsb="30"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Bassdrummodulatormultiplierfall">Bass drum modulator multiplier fall (CC 31)</label>
+                <input
+                    class="midiccparam" id="Bassdrummodulatormultiplierfall"
+                    data-midiChannel="10" data-cclsb="31"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Bassdrummodulatorattack">Bass drum modulator attack (CC 32)</label>
+                <input
+                    class="midiccparam" id="Bassdrummodulatorattack"
+                    data-midiChannel="10" data-cclsb="32"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Bassdrummodulatordecay">Bass drum modulator decay (CC 33)</label>
+                <input
+                    class="midiccparam" id="Bassdrummodulatordecay"
+                    data-midiChannel="10" data-cclsb="33"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+        </div>
+        <div class="controlitemgroup">
+            <h3>Snare Settings</h3>
+            <div class="controller">
+                <label for="Snarewaveform">Snare waveform (CC 35)</label>
+                <input
+                    class="midiccparam" id="Snarewaveform"
+                    data-midiChannel="10" data-cclsb="35"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Snaremultiplier">Snare multiplier (CC 36)</label>
+                <input
+                    class="midiccparam" id="Snaremultiplier"
+                    data-midiChannel="10" data-cclsb="36"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Snaretune">Snare tune (CC 37)</label>
+                <input
+                    class="midiccparam" id="Snaretune"
+                    data-midiChannel="10" data-cclsb="37"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Snaretunefall">Snare tune fall (CC 38)</label>
+                <input
+                    class="midiccparam" id="Snaretunefall"
+                    data-midiChannel="10" data-cclsb="38"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Snareattack">Snare attack (CC 39)</label>
+                <input
+                    class="midiccparam" id="Snareattack"
+                    data-midiChannel="10" data-cclsb="39"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Snaredecay">Snare decay (CC 40)</label>
+                <input
+                    class="midiccparam" id="Snaredecay"
+                    data-midiChannel="10" data-cclsb="40"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+        </div>
+        <div class="controlitemgroup">
+            <h3>Hats</h3>
+            <div class="controller">
+                <label for="Hatswaveform">Hats waveform (CC 45)</label>
+                <input
+                    class="midiccparam" id="Hatswaveform"
+                    data-midiChannel="10" data-cclsb="45"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Hatsmultiplier">Hats multiplier (CC 55)</label>
+                <input
+                    class="midiccparam" id="Hatsmultiplier"
+                    data-midiChannel="10" data-cclsb="55"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Hatstune">Hats tune (CC 56)</label>
+                <input
+                    class="midiccparam" id="Hatstune"
+                    data-midiChannel="10" data-cclsb="56"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Hatsfall">Hats fall (CC 57)</label>
+                <input
+                    class="midiccparam" id="Hatsfall"
+                    data-midiChannel="10" data-cclsb="57"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Hatsattack">Hats attack (CC 51)</label>
+                <input
+                    class="midiccparam" id="Hatsattack"
+                    data-midiChannel="10" data-cclsb="51"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="HatsDecay">Hats Decay (CC 54)</label>
+                <input
+                    class="midiccparam" id="HatsDecay"
+                    data-midiChannel="10" data-cclsb="54"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+        </div>
+        <div class="controlitemgroup">
+            <h3>Tom Settings</h3>
+            <div class="controller">
+                <label for="Tomwaveform">Tom waveform (CC 44)</label>
+                <input
+                    class="midiccparam" id="Tomwaveform"
+                    data-midiChannel="10" data-cclsb="44"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Tommultiplier">Tom multiplier (CC 48)</label>
+                <input
+                    class="midiccparam" id="Tommultiplier"
+                    data-midiChannel="10" data-cclsb="48"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Tomtune">Tom tune (CC 46)</label>
+                <input
+                    class="midiccparam" id="Tomtune"
+                    data-midiChannel="10" data-cclsb="46"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Tomfall">Tom fall (CC 47)</label>
+                <input
+                    class="midiccparam" id="Tomfall"
+                    data-midiChannel="10" data-cclsb="47"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Tomattack">Tom attack (CC 50)</label>
+                <input
+                    class="midiccparam" id="Tomattack"
+                    data-midiChannel="10" data-cclsb="50"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Tomdecay">Tom decay (CC 53)</label>
+                <input
+                    class="midiccparam" id="Tomdecay"
+                    data-midiChannel="10" data-cclsb="53"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END: Drum Settings-->
+
+<!-- BEGIN: Voice 1 Settings-->
+<div class="controlpanel">
+    <h2>Voice 1 Settings (Channel 1)</h2>
+    <div class="controlflexlayout">
+        <div class="controlitemgroup">
+            <h3>Operator 1 Settings</h3>
+            <div class="controller">
+                <label for="VolumeOP1">Volume OP1 (CC 20)</label>
+                <input
+                    class="midiccparam" id="VolumeOP1"
+                    data-midiChannel="1" data-cclsb="20"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="radiogroup">
+                <span>Waveform OP1 (CC21):</span>
+            </br>
+            <table style="width: 95%">
+                <tr>
+                    <td style="text-align: center">
+                        <input
+                            type="radio" name="WaveformOP1" value="0" checked
+                            class="midicctotal" id="WaveformOP1-1"
+                            data-midiChannel="1" data-cclsb="23"/></br>
+                        <label for="WaveformOP1-1"><img src="style/wav1.png"></label>
+                    </td>
+                    <td style="text-align: center">
+                        <input
+                            type="radio" name="WaveformOP1" value="26"
+                            class="midicctotal" id="WaveformOP1-2"
+                            data-midiChannel="1" data-cclsb="23"/></br>
+                        <label for="WaveformOP1-2"><img src="style/wav2.png"></label>
+                    </td>
+                    <td style="text-align: center">
+                        <input
+                            type="radio" name="WaveformOP1" value="52"
+                            class="midicctotal" id="WaveformOP1-3"
+                            data-midiChannel="1" data-cclsb="23"/></br>
+                        <label for="WaveformOP1-3"><img src="style/wav3.png"></label>                        
+                    </td>
+                    <td style="text-align: center">
+                        <input
+                            type="radio" name="WaveformOP1" value="78"
+                            class="midicctotal" id="WaveformOP1-4"
+                            data-midiChannel="1" data-cclsb="23"/></br>
+                        <label for="WaveformOP1-4"><img src="style/wav4.png"></label>                        
+                    </td>
+                    <td style="text-align: center">
+                        <input
+                            type="radio" name="WaveformOP1" value="103"
+                            class="midicctotal" id="WaveformOP1-5"
+                        data-midiChannel="1" data-cclsb="23"/></br>
+                        <label for="WaveformOP1-5"><img src="style/wav5.png"></label>                        
+                    </td>
+                    <td style="text-align: center">
+                        <input
+                            type="radio" name="WaveformOP1" value="127"
+                            class="midicctotal" id="WaveformOP1-6"
+                        data-midiChannel="1" data-cclsb="23"/></br>
+                        <label for="WaveformOP1-6"><img src="style/wav6.png"></label>                        
+                    </td>
+                </tr>
+            </table>
+            </div>
+
+            <div class="controller">
+                <label for="FeedbackOP1">Feedback OP1 (CC 22)</label>
+                <input
+                    class="midiccparam" id="FeedbackOP1"
+                    data-midiChannel="1" data-cclsb="22"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="Algorithmalloperators">Algorithm all operators (CC 23)</label>
+                <input
+                    class="midiccparam" id="Algorithmalloperators"
+                    data-midiChannel="1" data-cclsb="23"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+
+            <div class="radiogroup">
+                <span>Alforithm (CC 23):</span>
+            </br>
+            <table style="width: 95%">
+                <tr>
+                    <td style="text-align: center">
+                        <input
+                            type="radio" name="Algorithmalloperators" value="0" checked
+                            class="midicctotal" id="Algorithmalloperators-1"
+                            data-midiChannel="1" data-cclsb="23"/></br>
+                        <label for="Algorithmalloperators-1"><img src="style/algo1.png"></label>
+                    </td>
+                    <td style="text-align: center">
+                        <input
+                            type="radio" name="Algorithmalloperators" value="32"
+                            class="midicctotal" id="Algorithmalloperators-2"
+                            data-midiChannel="1" data-cclsb="23"/></br>
+                        <label for="Algorithmalloperators-2"><img src="style/algo2.png"></label>
+                    </td>
+                    <td style="text-align: center">
+                        <input
+                            type="radio" name="Algorithmalloperators" value="64"
+                            class="midicctotal" id="Algorithmalloperators-3"
+                            data-midiChannel="1" data-cclsb="23"/></br>
+                        <label for="Algorithmalloperators-3"><img src="style/algo3.png"></label>                        
+                    </td>
+                    <td style="text-align: center">
+                        <input
+                            type="radio" name="Algorithmalloperators" value="96"
+                            class="midicctotal" id="Algorithmalloperators-4"
+                            data-midiChannel="1" data-cclsb="23"/></br>
+                        <label for="Algorithmalloperators-4"><img src="style/algo4.png"></label>                        
+                    </td>
+                    <td style="text-align: center">
+                        <input
+                            type="radio" name="Algorithmalloperators" value="127"
+                            class="midicctotal" id="Algorithmalloperators-5"
+                        data-midiChannel="1" data-cclsb="23"/></br>
+                        <label for="Algorithmalloperators-5"><img src="style/algo5.png"></label>                        
+                    </td>
+                </tr>
+            </table>
+            </div>
+
+            <div class="controller">
+                <label for="MultipleOP1">Multiple OP1 (CC 24)</label>
+                <input
+                    class="midiccparam" id="MultipleOP1"
+                    data-midiChannel="1" data-cclsb="24"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="AttackOP1">Attack OP1 (CC 25)</label>
+                <input
+                    class="midiccparam" id="AttackOP1"
+                    data-midiChannel="1" data-cclsb="25"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="DecayOP1">Decay OP1 (CC 26)</label>
+                <input
+                    class="midiccparam" id="DecayOP1"
+                    data-midiChannel="1" data-cclsb="26"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+        </div>
+        <div class="controlitemgroup">
+            <h3>Operator 2 Settings</h3>
+            <div class="controller">
+                <label for="VolumeOP2">Volume OP2 (CC 27)</label>
+                <input
+                    class="midiccparam" id="VolumeOP2"
+                    data-midiChannel="1" data-cclsb="27"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="WaveformOP2">Waveform OP2 (CC 28)</label>
+                <input
+                    class="midiccparam" id="WaveformOP2"
+                    data-midiChannel="1" data-cclsb="28"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="MultiplierOP2">Multiplier OP2 (CC 29)</label>
+                <input
+                    class="midiccparam" id="MultiplierOP2"
+                    data-midiChannel="1" data-cclsb="29"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="TremoloOP2">Tremolo OP2 (CC 30)</label>
+                <input
+                    class="midiccparam" id="TremoloOP2"
+                    data-midiChannel="1" data-cclsb="30"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="VibratoOP2">Vibrato OP2 (CC 31)</label>
+                <input
+                    class="midiccparam" id="VibratoOP2"
+                    data-midiChannel="1" data-cclsb="31"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="AttackOP2">Attack OP2 (CC 32)</label>
+                <input
+                    class="midiccparam" id="AttackOP2"
+                    data-midiChannel="1" data-cclsb="32"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="DecayOP2">Decay OP2 (CC 33)</label>
+                <input
+                    class="midiccparam" id="DecayOP2"
+                    data-midiChannel="1" data-cclsb="33"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+        </div>
+        <div class="controlitemgroup">
+            <h3>Operator 3 Settings</h3>
+            <div class="controller">
+                <label for="VolumeOP3">Volume OP3 (CC 34)</label>
+                <input
+                    class="midiccparam" id="VolumeOP3"
+                    data-midiChannel="1" data-cclsb="34"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="WaveformOP3">Waveform OP3 (CC 35)</label>
+                <input
+                    class="midiccparam" id="WaveformOP3"
+                    data-midiChannel="1" data-cclsb="35"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="FeedbackOP3">Feedback OP3 (CC 36)</label>
+                <input
+                    class="midiccparam" id="FeedbackOP3"
+                    data-midiChannel="1" data-cclsb="36"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="TuneOP3">Tune OP3 (CC 37)</label>
+                <input
+                    class="midiccparam" id="TuneOP3"
+                    data-midiChannel="1" data-cclsb="37"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="MultiplierOP3">Multiplier OP3 (CC 38)</label>
+                <input
+                    class="midiccparam" id="MultiplierOP3"
+                    data-midiChannel="1" data-cclsb="38"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="AttackOP3">Attack OP3 (CC 39)</label>
+                <input
+                    class="midiccparam" id="AttackOP3"
+                    data-midiChannel="1" data-cclsb="39"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="DecayOP3">Decay OP3 (CC 40)</label>
+                <input
+                    class="midiccparam" id="DecayOP3"
+                    data-midiChannel="1" data-cclsb="40"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+        </div>
+        <div class="controlitemgroup">
+            <h3>Operator 4 Settings</h3>
+            <div class="controller">
+                <label for="VolumeOP4">Volume OP4 (CC 41)</label>
+                <input
+                    class="midiccparam" id="VolumeOP4"
+                    data-midiChannel="1" data-cclsb="41"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="WaveformOP4">Waveform OP4 (CC 42)</label>
+                <input
+                    class="midiccparam" id="WaveformOP4"
+                    data-midiChannel="1" data-cclsb="42"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="MultiplierOP4">Multiplier OP4 (CC 43)</label>
+                <input
+                    class="midiccparam" id="MultiplierOP4"
+                    data-midiChannel="1" data-cclsb="43"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="TremoloOP4">Tremolo OP4 (CC 44)</label>
+                <input
+                    class="midiccparam" id="TremoloOP4"
+                    data-midiChannel="1" data-cclsb="44"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="VibratoOP4">Vibrato OP4 (CC 45)</label>
+                <input
+                    class="midiccparam" id="VibratoOP4"
+                    data-midiChannel="1" data-cclsb="45"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="AttackOP4">Attack OP4 (CC 46)</label>
+                <input
+                    class="midiccparam" id="AttackOP4"
+                    data-midiChannel="1" data-cclsb="46"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+            <div class="controller">
+                <label for="DecayOP4">Decay OP4 (CC 47)</label>
+                <input
+                    class="midiccparam" id="DecayOP4"
+                    data-midiChannel="1" data-cclsb="47"
+                    data-displayvaluefunc="hundred"
+                    max="127" min="0" type="range" >
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- END: Voice 1 Settings-->
+
+<div id="ccParameterDisplay">100</div>
+</body>
+</html>
