@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Conductive Labs NDLR Web Editor</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" />
+    <link href="style/NDLRstyle.css" rel="stylesheet" />
+    <script src="./script/ccynthmata.js" type="text/javascript"></script>
+    <script src="./res/NDLRinit_patch.js" type="text/javascript"></script>
+    <script>
+        // parameter display transforms:
+        let Doubler = (value) => value === 127 ? 255 : value * 2;
+        let Hundred = (value) => value === 127 ? 100 : Math.round(Math.round(((value - 64) / 64 * 200)) / 2); // yeah, I don't get it either
+        let OnOffer = (value) => value < 64 ? "Off" : "On";
+        let OnetoTen = (value) => value === 127 ? 10 : Math.round(Math.round(((value - 64) / 64 * 20)))
+        let OnetoTwenty = (value) => value === 127 ? 20 : Math.round(Math.round(((value - 64) / 64 * 40)))
+        let OnetoThirty = (value) => value === 127 ? 30 : Math.round(Math.round(((value - 64) / 64 * 60)))
+
+        var cynth;
+        let init = ()=>{
+            cynth = new Ccynthmata(
+                {
+                    initPatch: InitPatch, 
+                    autoHideParameterDisplay: true,
+                        doubler: Doubler,
+                        hundred: Hundred,
+                        onoffer: OnOffer,
+                        onetoten: OnetoTen,
+                        onetotwenty: OnetoTwenty,
+                        onetoThirty: OnetoThirty,
+                }); 
+            cynth.init();
+        }
+        let showHideInstructions = ()=>{
+            let instructions = document.getElementById("instructions");
+            if(instructions.classList.contains("hiddenInstructions")){
+                instructions.classList.remove("hiddenInstructions");
+                instructions.classList.add("shownInstructions");
+            }else{
+                instructions.classList.remove("shownInstructions");
+                instructions.classList.add("hiddenInstructions");
+            }
+        }
+    </script>
+</head>
+<body onload="init()">
+<div id="title-head">
+            <span>NDLR Web Editor</span>
+</div>
+<div id="title-byline">
+    <span>by Charlie Ruby with a hefty bit of code taken from 
+        <a href="http://oscillatorsink.com">oscillatorsink</a>
+    </span>
+</div>
+<div id="subtitle-head">
+    <span>free online editor for the <a href="https://conductivelabs.com/ndlr/">Conductive Labs NDLR</a>
+        <br>BETA VERSION</span>
+</div>
+<div id="main-content">
+    <div class="controlpanel">
+        <div class="controlitemgroup">
+        <h2>Instructions</h2>
+        <div class="showHide"><a href="#" onclick="showHideInstructions()">show / hide</a></div>
+        <div id="instructions" class="hiddenInstructions">
+            <p>This is an editor I tried to make so I can edit parameters of my NDLR unit in a graphic interface. I am not a coder and I basically copied oscillatorsink's code for the Volca Drum and slowly edited things for my unit.</p>
+            <p>Connect your NDLR to your chosen MIDI interface or via USB.</p>
+            <p>Select that MIDI interface in the Midi Device Setup (default channel is 15).</p>
+            <p>The settings will be sent to your sound module automatically when the interface is chosen.</p>
+            <p>Make your patch!</p>
+            <p>My preferred way to "save" your patch is by clicking "Create Sharable Patch Link" and saving the link somewhere (and don't forget to share it!).
+                You can also save a stream of MIDI CC data which can be played back using a DAW etc. by clicking "Save Patch". You can also save the current
+                state of the patch on your NDLR-1.</p>
+            <p>Have fun!</p>
+            <p>If you have questions...I am probably not the one to ask, so I would point you to oscillatorsink. You can get hold of him on one of many social media platforms:</p>
+            <ul>
+                <li><a href="https://www.youtube.com/oscillatorsink">YouTube</a></li>
+                <li><a href="https://www.facebook.com/OscillatorSink/">Facebook</a></li>
+                <li><a href="https://twitter.com/oscillatorsink">Twitter</a></li>
+            </ul>
+            <p>This is the library by oscillatorsink I used to build this patch editor here:
+                <a href="https://github.com/synthmata/ccynthmata">ccynthmata</a></p>
+        </div>
+        </div>
+    </div>
+    <div class="controlpanel">
+        <h2>Setup</h2>
+        <div class="controlflexlayout">
+            <div class="controlitemgroup" id="midiSetup">
+                <h3>Midi Device Setup</h3>
+            </div>
+            <div class="controlitemgroup" id="saveLoadPanel">
+                <h3>Save/Load/Export/Share</h3>
+            </div>
+        </div>
+    </div>
+    <div class="controlpanel">
+        <div class="controlitemgroup">
+            <h3>Patch Name</h3>
+            <label for="ccynthmataPatchName" style="display: none">Patch Name</label>
+            <input type="text" id="ccynthmataPatchName" maxlength="64"/>
+        </div>
+    </div>
+
+    <!-- BEGIN: Global Parameters-->
+    <div class="controlpanel">
+        <h2>Global Parameters</h2>
+        <div class="controlflexlayout">
+            <div class="controlitemgroup">
+            <h3>Key</h3>
+            <div class="radiogroup">
+                <span>Key Tonic (CC 73): </span>
+                <br>
+                <input
+                    type="radio" name="Key-Toggle" value="1" checked
+                    class="midicctotal" id="Key-Toggle-C"
+                    data-midiChannel="15" data-cclsb="73"/>
+                <label for="Key-Toggle-C">C</label>
+                <br>
+                <input
+                    type="radio" name="Key-Toggle" value="2"
+                    class="midicctotal" id="Key-Toggle-G"
+                    data-midiChannel="15" data-cclsb="73"/>
+                <label for="Key-Toggle-G">G</label>
+                <br>
+                <input
+                    type="radio" name="Key-Toggle" value="3"
+                    class="midicctotal" id="Key-Toggle-D"
+                    data-midiChannel="15" data-cclsb="73"/>
+                <label for="Key-Toggle-D">D</label>
+                <br>
+                <input
+                    type="radio" name="Key-Toggle" value="4"
+                    class="midicctotal" id="Key-Toggle-A"
+                    data-midiChannel="15" data-cclsb="73"/>
+                <label for="Key-Toggle-A">A</label>
+                <br>
+                <input
+                    type="radio" name="Key-Toggle" value="5"
+                    class="midicctotal" id="Key-Toggle-E"
+                    data-midiChannel="15" data-cclsb="73"/>
+                <label for="Key-Toggle-E">E</label>
+                <br>
+                <input
+                    type="radio" name="Key-Toggle" value="6"
+                    class="midicctotal" id="Key-Toggle-B"
+                    data-midiChannel="15" data-cclsb="73"/>
+                <label for="Key-Toggle-B">B</label>
+                <br>
+                <input
+                    type="radio" name="Key-Toggle" value="7"
+                    class="midicctotal" id="Key-Toggle-F#"
+                    data-midiChannel="15" data-cclsb="73"/>
+                <label for="Key-Toggle-F#">F#</label>
+                <br>
+                <input
+                    type="radio" name="Key-Toggle" value="8"
+                    class="midicctotal" id="Key-Toggle-Db"
+                    data-midiChannel="15" data-cclsb="73"/>
+                <label for="Key-Toggle-Db">Db</label>
+                <br>
+                <input
+                    type="radio" name="Key-Toggle" value="9"
+                    class="midicctotal" id="Key-Toggle-Ab"
+                    data-midiChannel="15" data-cclsb="73"/>
+                <label for="Key-Toggle-Ab">Ab</label>
+                <br>
+                <input
+                    type="radio" name="Key-Toggle" value="10"
+                    class="midicctotal" id="Key-Toggle-Eb"
+                    data-midiChannel="15" data-cclsb="73"/>
+                <label for="Key-Toggle-Eb">Eb</label>
+                <br>
+                <input
+                    type="radio" name="Key-Toggle" value="11"
+                    class="midicctotal" id="Key-Toggle-Bb"
+                    data-midiChannel="15" data-cclsb="73"/>
+                <label for="Key-Toggle-Bb">Bb</label>
+                <br>
+                <input
+                    type="radio" name="Key-Toggle" value="12"
+                    class="midicctotal" id="Key-Toggle-F"
+                    data-midiChannel="15" data-cclsb="73"/>
+                <label for="Key-Toggle-F">F</label>
+                <br>
+            <div class="radiogroup">
+                <span>Key Mode (CC 74): </span>
+                <br>
+                <input
+                    type="radio" name="Mode-Toggle" value="0" checked
+                    class="midicctotal" id="Mode-Toggle-Major"
+                    data-midiChannel="15" data-cclsb="74"/>
+                <label for="Mode-Toggle-Major">Ionian (Major)</label>
+                <br>
+                <input
+                    type="radio" name="Mode-Toggle" value="2"
+                    class="midicctotal" id="Mode-Toggle-Dorian"
+                    data-midiChannel="15" data-cclsb="74"/>
+                <label for="Mode-Toggle-Dorian">Dorian</label>
+                <br>
+                <input
+                    type="radio" name="Mode-Toggle" value="3"
+                    class="midicctotal" id="Mode-Toggle-Phrygian"
+                    data-midiChannel="15" data-cclsb="74"/>
+                <label for="Mode-Toggle-Phrygian">Phrygian</label>
+                <br>
+                <input
+                    type="radio" name="Mode-Toggle" value="4"
+                    class="midicctotal" id="Mode-Toggle-Lydian"
+                    data-midiChannel="15" data-cclsb="74"/>
+                <label for="Mode-Toggle-Lydian">Lydian</label>
+                <br>
+                <input
+                    type="radio" name="Mode-Toggle" value="5"
+                    class="midicctotal" id="Mode-Toggle-Mixolydian"
+                    data-midiChannel="15" data-cclsb="74"/>
+                <label for="Mode-Toggle-Mixolydian">Mixolydian</label>
+                <br>
+                <input
+                    type="radio" name="Mode-Toggle" value="6"
+                    class="midicctotal" id="Mode-Toggle-Aeolian"
+                    data-midiChannel="15" data-cclsb="74"/>
+                <label for="Mode-Toggle-Aeolian">Aeolian (Minor)</label>
+                <br>
+                <input
+                    type="radio" name="Mode-Toggle" value="7"
+                    class="midicctotal" id="Mode-Toggle-Locrian"
+                    data-midiChannel="15" data-cclsb="74"/>
+                <label for="Mode-Toggle-Locrian">Locrian</label>
+                <br>
+                <input
+                    type="radio" name="Mode-Toggle" value="8"
+                    class="midicctotal" id="Mode-Toggle-HunMinor"
+                    data-midiChannel="15" data-cclsb="74"/>
+                <label for="Mode-Toggle-HMinor">Hungarian Minor</label>
+                <br>
+                <input
+                    type="radio" name="Mode-Toggle" value="9"
+                    class="midicctotal" id="Mode-Toggle-HarmMinor"
+                    data-midiChannel="15" data-cclsb="74"/>
+                <label for="Mode-Toggle-HarmMinor">Harmonic Minor</label>
+                <br>
+                <input
+                    type="radio" name="Mode-Toggle" value="10"
+                    class="midicctotal" id="Mode-Toggle-PentMinor"
+                    data-midiChannel="15" data-cclsb="74"/>
+                <label for="Mode-Toggle-PentMinor">Pentatonic Minor</label>
+                <br>
+                <input
+                    type="radio" name="Mode-Toggle" value="11"
+                    class="midicctotal" id="Mode-Toggle-WholeTone"
+                    data-midiChannel="15" data-cclsb="74"/>
+                <label for="Mode-Toggle-WholeTone">Whole Tone</label>
+                <br>
+                <input
+                    type="radio" name="Mode-Toggle" value="12"
+                    class="midicctotal" id="Mode-Toggle-Tonic2nd"
+                    data-midiChannel="15" data-cclsb="74"/>
+                <label for="Mode-Toggle-Tonic2nd">Tonic 2nds</label>
+                <br>
+                <input
+                   type="radio" name="Mode-Toggle" value="13"
+                    class="midicctotal" id="Mode-Toggle-Tonic3rd"
+                    data-midiChannel="15" data-cclsb="74"/>
+                <label for="Mode-Toggle-Tonic3rd">Tonic 3rds</label>
+                <br>
+                <input
+                    type="radio" name="Mode-Toggle" value="14"
+                    class="midicctotal" id="Mode-Toggle-Tonic4th"
+                    data-midiChannel="15" data-cclsb="74"/>
+                <label for="Mode-Toggle-Tonic4th">Tonic 4ths</label>
+                <br>
+                <input
+                    type="radio" name="Mode-Toggle" value="15"
+                    class="midicctotal" id="Mode-Toggle-Tonic6th"
+                    data-midiChannel="15" data-cclsb="74"/>
+                <label for="Mode-Toggle-Tonic6th">Tonic 6ths</label>
+            </div>
+            </div>
+            </div>
+            <div class="controlitemgroup">
+                <H3>Performance Parameters</H3>
+                <div class="controller">
+                    <label for="Tempo">Tempo (CC 72)</label>
+                    <input
+                        class="midiccparam" id="Tempo"
+                        data-midiChannel="15" data-cclsb="9"
+                        data-displayvaluefunc="doubler"
+                        max="127" min="5" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="Humanize">Humanize (CC 59)</label>
+                    <input
+                        class="midiccparam" id="Humanize"
+                        data-midiChannel="1" data-cclsb="59"
+                        data-displayvaluefunc="hundred"
+                        max="10" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="OscTimbre">Oscillator Timbre (CC 12)</label>
+                    <input
+                        class="midiccparam" id="OscTimbre"
+                        data-midiChannel="1" data-cclsb="12"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="OscShape">Oscillator Shape (CC 13)</label>
+                    <input
+                        class="midiccparam" id="OscShape"
+                        data-midiChannel="1" data-cclsb="13"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END: Global Parameters-->
+
+<div id="ccParameterDisplay">100</div>
+</body>
+</html>
