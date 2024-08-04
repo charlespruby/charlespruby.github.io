@@ -105,10 +105,8 @@
         <h2>Global Parameters</h2>
         <div class="controlflexlayout">
             <div class="controlitemgroup">
-            <h3>Key</h3>
+            <h3>Key Tonic (CC 73)</h3>
             <div class="radiogroup">
-                <span>Key Tonic (CC 73): </span>
-                <br>
                 <input
                     type="radio" name="Key-Toggle" value="1" checked
                     class="midicctotal" id="Key-Toggle-C"
@@ -181,9 +179,11 @@
                     data-midiChannel="15" data-cclsb="73"/>
                 <label for="Key-Toggle-F">F</label>
                 <br>
+                </div>
+            </div>
+            <div class="controlitemgroup">
+                <h3>Key Mode (CC 74)</h3>
             <div class="radiogroup">
-                <span>Key Mode (CC 74): </span>
-                <br>
                 <input
                     type="radio" name="Mode-Toggle" value="0" checked
                     class="midicctotal" id="Mode-Toggle-Major"
@@ -275,7 +275,8 @@
                 <label for="Mode-Toggle-Tonic6th">Tonic 6ths</label>
             </div>
             </div>
-            </div>
+        </div>
+        <div class="controlflexlayout">
             <div class="controlitemgroup">
                 <H3>Performance Parameters</H3>
                 <div class="controller">
@@ -294,26 +295,132 @@
                         data-displayvaluefunc="hundred"
                         max="10" min="0" type="range" >
                 </div>
-                <div class="controller">
-                    <label for="OscTimbre">Oscillator Timbre (CC 12)</label>
-                    <input
-                        class="midiccparam" id="OscTimbre"
-                        data-midiChannel="1" data-cclsb="12"
-                        data-displayvaluefunc="hundred"
-                        max="127" min="0" type="range" >
-                </div>
-                <div class="controller">
-                    <label for="OscShape">Oscillator Shape (CC 13)</label>
-                    <input
-                        class="midiccparam" id="OscShape"
-                        data-midiChannel="1" data-cclsb="13"
-                        data-displayvaluefunc="hundred"
-                        max="127" min="0" type="range" >
-                </div>
             </div>
         </div>
     </div>
     <!-- END: Global Parameters-->
+
+    <!-- BEGIN: Chord Parameters-->
+    <div class="controlpanel">
+        <H2>Chord Parameters</H2>
+        <div class="controlflexlayout">
+            <div class="controlitemgroup">
+                <H3>Chord Degree (CC 26)</H3>
+                <div class="radiogroup">
+                    <input
+                        type="radio" name="Chord-Deg-Toggle" value="1" checked
+                        class="midicctotal" id="Chord-Deg-Toggle-I"
+                        data-midiChannel="15" data-cclsb="26"/>
+                    <label for="Chord-Deg-Toggle-I">I</label>
+                    <br>
+                    <input
+                        type="radio" name="Chord-Deg-Toggle" value="2"
+                        class="midicctotal" id="Chord-Deg-Toggle-II"
+                        data-midiChannel="15" data-cclsb="26"/>
+                    <label for="Chord-Deg-Toggle-II">II</label>
+                    <br>
+                    <input
+                        type="radio" name="Chord-Deg-Toggle" value="3"
+                        class="midicctotal" id="Chord-Deg-Toggle-III"
+                        data-midiChannel="15" data-cclsb="26"/>
+                    <label for="Chord-Deg-Toggle-III">III</label>
+                    <br>
+                    <input
+                        type="radio" name="Chord-Deg-Toggle" value="4"
+                        class="midicctotal" id="Chord-Deg-Toggle-IV"
+                        data-midiChannel="15" data-cclsb="26"/>
+                    <label for="Chord-Deg-Toggle-IV">IV</label>
+                    <br>
+                    <input
+                        type="radio" name="Chord-Deg-Toggle" value="5"
+                        class="midicctotal" id="Chord-Deg-Toggle-V"
+                        data-midiChannel="15" data-cclsb="26"/>
+                    <label for="Chord-Deg-Toggle-V">V</label>
+                    <br>
+                    <input
+                        type="radio" name="Chord-Deg-Toggle" value="6"
+                        class="midicctotal" id="Chord-Deg-Toggle-VII"
+                        data-midiChannel="15" data-cclsb="26"/>
+                    <label for="Chord-Deg-Toggle-VII">VII</label>
+                    <br>
+                    <input
+                        type="radio" name="Chord-Deg-Toggle" value="7"
+                        class="midicctotal" id="Chord-Deg-Toggle-VII"
+                        data-midiChannel="15" data-cclsb="26"/>
+                    <label for="Chord-Deg-Toggle-VII">VII</label>
+                    <br>
+                </div>
+            </div>
+        </div>
+        <div class="controlflexlayout">
+            <div class="controlitemgroup">
+                <H3>Chord Type (CC 26)</H3>
+                <div class="radiogroup">
+                    <input
+                        type="radio" name="Chord-Type-Toggle" value="1" checked
+                        class="midicctotal" id="Chord-Type-Toggle-Triad"
+                        data-midiChannel="15" data-cclsb="26"/>
+                    <label for="Chord-Type-Toggle-Triad">Triad</label>
+                    <br>
+                    <input
+                        type="radio" name="Chord-Type-Toggle" value="2"
+                        class="midicctotal" id="Chord-Type-Toggle-7th"
+                        data-midiChannel="15" data-cclsb="26"/>
+                    <label for="Chord-Type-Toggle-7th">7th</label>
+                    <br>
+                    <input
+                        type="radio" name="Chord-Type-Toggle" value="3"
+                        class="midicctotal" id="Chord-Type-Toggle-Sus2"
+                        data-midiChannel="15" data-cclsb="26"/>
+                    <label for="Chord-Type-Toggle-Sus2">Sus2</label>
+                    <br>
+                    <input
+                        type="radio" name="Chord-Type-Toggle" value="4"
+                        class="midicctotal" id="Chord-Type-Toggle-Alt1"
+                        data-midiChannel="15" data-cclsb="26"/>
+                    <label for="Chord-Type-Toggle-Alt1">Alt1</label>
+                    <br>
+                    <input
+                        type="radio" name="Chord-Type-Toggle" value="5"
+                        class="midicctotal" id="Chord-Type-Toggle-Alt2"
+                        data-midiChannel="15" data-cclsb="26"/>
+                    <label for="Chord-Type-Toggle-Alt2">Alt2</label>
+                    <br>
+                    <input
+                        type="radio" name="Chord-Type-Toggle" value="6"
+                        class="midicctotal" id="Chord-Type-Toggle-Sus4"
+                        data-midiChannel="15" data-cclsb="26"/>
+                    <label for="Chord-Type-Toggle-Sus4">Sus4</label>
+                    <br>
+                    <input
+                        type="radio" name="Chord-Type-Toggle" value="7"
+                        class="midicctotal" id="Chord-Type-Toggle-6th"
+                        data-midiChannel="15" data-cclsb="26"/>
+                    <label for="Chord-Type-Toggle-6th">6th</label>
+                    <br>
+                </div>
+            </div>
+        </div>
+        <div class="controlflexlayout">
+            <div class="controlitemgroup">
+                <H3>Chord Inversion (CC 69)</H3>
+                <div class="radiogroup">
+                    <input
+                        type="radio" name="Chord-Inv-Toggle" value="0" Checked
+                        class="midicctotal" id="Chord-Inv-Toggle-ON"
+                        data-midiChannel="15" data-cclsb="69"/>
+                    <label for="Chord-Inv-Toggle-ON">ON</label>
+                    <br>
+                    <input
+                        type="radio" name="Chord-Inv-Toggle" value="127"
+                        class="midicctotal" id="Chord-Inv-Toggle-OFF"
+                        data-midiChannel="15" data-cclsb="69"/>
+                    <label for="Chord-Inv-Toggle-OFF">OFF</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END: Chord Parameters-->
 
 <div id="ccParameterDisplay">100</div>
 </body>
