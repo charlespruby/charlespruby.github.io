@@ -68,7 +68,7 @@
             <p>Make your patch!</p>
             <p>My preferred way to "save" your patch is by clicking "Create Sharable Patch Link" and saving the link somewhere (and don't forget to share it!).
                 You can also save a stream of MIDI CC data which can be played back using a DAW etc. by clicking "Save Patch". You can also save the current
-                state of the patch on your Ultranova-1.</p>
+                state of the patch on your Ultranova.</p>
             <p>Have fun!</p>
             <p>If you have questions...I am probably not the one to ask, so I would point you to oscillatorsink. You can get hold of him on one of many social media platforms:</p>
             <ul>
@@ -105,6 +105,7 @@
         <h2>Voice Parameters</h2>
         <div class="controlflexlayout">
             <div class="controlitemgroup">
+                <h3>Global Voice Parameters</h3>
                 <div class="controller">
                     <label for="UnisonCount">Unison Count (CC 14)</label>
                     <input
@@ -153,283 +154,568 @@
                         data-displayvaluefunc="hundred"
                         max="127" min="0" type="range" >
                 </div>
-            </div>
-        </div>
-        <h2>Oscillator 1 Parameters</h2>
-        <div class="controlflexlayout">
-            <div class="controlitemgroup">
                 <div class="controller">
-                    <label for="OscType">Oscillator Type (CC 9)</label>
+                    <label for="Osc123ModVib">Oscillator 123 Vibrato Depth (CC 77)</label>
                     <input
-                        class="midiccparam" id="OscType"
-                        data-midiChannel="1" data-cclsb="9"
+                        class="midiccparam" id="Osc123ModVib"
+                        data-midiChannel="1" data-cclsb="77"
                         data-displayvaluefunc="hundred"
                         max="127" min="0" type="range" >
                 </div>
                 <div class="controller">
-                    <label for="OscWav">Oscillator Wave (CC 10)</label>
+                    <label for="Osc123ModVibRate">Oscillator 123 Vibrato Rate (CC 76)</label>
                     <input
-                        class="midiccparam" id="OscWav"
-                        data-midiChannel="1" data-cclsb="9"
+                        class="midiccparam" id="Osc123ModVibRate"
+                        data-midiChannel="1" data-cclsb="76"
                         data-displayvaluefunc="hundred"
                         max="127" min="0" type="range" >
                 </div>
                 <div class="controller">
-                    <label for="OscTimbre">Oscillator Timbre (CC 12)</label>
+                    <label for="Osc123Drift">Oscillator 123 Drift (CC 16)</label>
                     <input
-                        class="midiccparam" id="OscTimbre"
-                        data-midiChannel="1" data-cclsb="12"
+                        class="midiccparam" id="Osc123Drift"
+                        data-midiChannel="1" data-cclsb="16"
                         data-displayvaluefunc="hundred"
                         max="127" min="0" type="range" >
                 </div>
                 <div class="controller">
-                    <label for="OscShape">Oscillator Shape (CC 13)</label>
+                    <label for="Osc123Phase">Oscillator 123 Start Phase (CC 17)</label>
                     <input
-                        class="midiccparam" id="OscShape"
-                        data-midiChannel="1" data-cclsb="13"
-                        data-displayvaluefunc="hundred"
-                        max="127" min="0" type="range" >
-                </div>
-            </div>
-        </div>
-        <h2>Oscillator 2 Parameters</h2>
-        <div class="controlflexlayout">
-            <div class="controlitemgroup">
-                <div class="controller">
-                    <label for="OscType">Oscillator Type (CC 9)</label>
-                    <input
-                        class="midiccparam" id="OscType"
-                        data-midiChannel="1" data-cclsb="9"
+                        class="midiccparam" id="Osc123Phase"
+                        data-midiChannel="1" data-cclsb="17"
                         data-displayvaluefunc="hundred"
                         max="127" min="0" type="range" >
                 </div>
                 <div class="controller">
-                    <label for="OscWav">Oscillator Wave (CC 10)</label>
+                    <label for="Osc123Phase">Oscillator 123 Start Phase (CC 17)</label>
                     <input
-                        class="midiccparam" id="OscWav"
-                        data-midiChannel="1" data-cclsb="9"
+                        class="midiccparam" id="Osc123Phase"
+                        data-midiChannel="1" data-cclsb="17"
                         data-displayvaluefunc="hundred"
                         max="127" min="0" type="range" >
                 </div>
                 <div class="controller">
-                    <label for="OscTimbre">Oscillator Timbre (CC 12)</label>
+                    <label for="NoiseType">Noise Type (CC 57)</label>
                     <input
-                        class="midiccparam" id="OscTimbre"
-                        data-midiChannel="1" data-cclsb="12"
-                        data-displayvaluefunc="hundred"
-                        max="127" min="0" type="range" >
-                </div>
-                <div class="controller">
-                    <label for="OscShape">Oscillator Shape (CC 13)</label>
-                    <input
-                        class="midiccparam" id="OscShape"
-                        data-midiChannel="1" data-cclsb="13"
+                        class="midiccparam" id="NoiseType"
+                        data-midiChannel="1" data-cclsb="57"
                         data-displayvaluefunc="hundred"
                         max="127" min="0" type="range" >
                 </div>
             </div>
-        </div>
-        <h2>Oscillator 3 Parameters</h2>
-        <div class="controlflexlayout">
-            <div class="controlitemgroup">
-                <div class="controller">
-                    <label for="OscType">Oscillator Type (CC 9)</label>
-                    <input
-                        class="midiccparam" id="OscType"
-                        data-midiChannel="1" data-cclsb="9"
-                        data-displayvaluefunc="hundred"
-                        max="127" min="0" type="range" >
+            <div class="controlflexlayout">
+                <div class="controlitemgroup">
+                    <h3>Oscillator 1 Parameters</h3>
+                    <div class="controller">
+                        <label for="Osc1Semi">Oscillator 1 Semitone Offset (CC 26)</label>
+                        <input
+                            class="midiccparam" id="Osc1Semi"
+                            data-midiChannel="1" data-cclsb="26"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc1Cents">Oscillator 1 Cents Offset (CC 27)</label>
+                        <input
+                            class="midiccparam" id="Osc1Cents"
+                            data-midiChannel="1" data-cclsb="27"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc1VSync">Oscillator 1 Sync Depth (CC 22)</label>
+                        <input
+                            class="midiccparam" id="Osc1VSync"
+                            data-midiChannel="1" data-cclsb="22"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc1Wave">Oscillator 1 Waveform (CC 19)</label>
+                        <input
+                            class="midiccparam" id="Osc1Wave"
+                            data-midiChannel="1" data-cclsb="19"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc1Pw-Idx">Oscillator 1 Pulsewidth/Index (CC 21)</label>
+                        <input
+                            class="midiccparam" id="Osc1Pw-Idx"
+                            data-midiChannel="1" data-cclsb="21"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc1Hard">Oscillator 1 Hardness (CC 23)</label>
+                        <input
+                            class="midiccparam" id="Osc1Hard"
+                            data-midiChannel="1" data-cclsb="23"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc1Dense">Oscillator 1 Density (CC 24)</label>
+                        <input
+                            class="midiccparam" id="Osc1Dense"
+                            data-midiChannel="1" data-cclsb="24"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc1DsnDtn">Oscillator 1 Density Detune (CC 19)</label>
+                        <input
+                            class="midiccparam" id="Osc1DsmDtn"
+                            data-midiChannel="1" data-cclsb="19"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc1PtchWh">Oscillator 1 Pitch Wheel (CC 28)</label>
+                        <input
+                            class="midiccparam" id="Osc1PtchWh"
+                            data-midiChannel="1" data-cclsb="28"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc1WTInt">Oscillator 1 Wavetable Interpolate (CC 20)</label>
+                        <input
+                            class="midiccparam" id="Osc1WTInt"
+                            data-midiChannel="1" data-cclsb="20"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
                 </div>
-                <div class="controller">
-                    <label for="OscWav">Oscillator Wave (CC 10)</label>
-                    <input
-                        class="midiccparam" id="OscWav"
-                        data-midiChannel="1" data-cclsb="9"
-                        data-displayvaluefunc="hundred"
-                        max="127" min="0" type="range" >
+            </div>
+            <div class="controlflexlayout">
+                <div class="controlitemgroup">
+                    <h3>Oscillator 2 Parameters</h3>
+                    <div class="controller">
+                        <label for="Osc2Semi">Oscillator 2 Semitone Offset (CC 37)</label>
+                        <input
+                            class="midiccparam" id="Osc2Semi"
+                            data-midiChannel="1" data-cclsb="37"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc2Cents">Oscillator 2 Cents Offset (CC 39)</label>
+                        <input
+                            class="midiccparam" id="Osc2Cents"
+                            data-midiChannel="1" data-cclsb="39"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc2VSync">Oscillator 2 Sync Depth (CC 33)</label>
+                        <input
+                            class="midiccparam" id="Osc2VSync"
+                            data-midiChannel="1" data-cclsb="33"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc2Wave">Oscillator 2 Waveform (CC 29)</label>
+                        <input
+                            class="midiccparam" id="Osc2Wave"
+                            data-midiChannel="1" data-cclsb="29"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc2Pw-Idx">Oscillator 2 Pulsewidth/Index (CC 31)</label>
+                        <input
+                            class="midiccparam" id="Osc2Pw-Idx"
+                            data-midiChannel="1" data-cclsb="31"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc2Hard">Oscillator 2 Hardness (CC 34)</label>
+                        <input
+                            class="midiccparam" id="Osc2Hard"
+                            data-midiChannel="1" data-cclsb="34"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc2Dense">Oscillator 2 Density (CC 35)</label>
+                        <input
+                            class="midiccparam" id="Osc2Dense"
+                            data-midiChannel="1" data-cclsb="35"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc2DsnDtn">Oscillator 2 Density Detune (CC 36)</label>
+                        <input
+                            class="midiccparam" id="Osc2DsmDtn"
+                            data-midiChannel="1" data-cclsb="36"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc2PtchWh">Oscillator 2 Pitch Wheel (CC 40)</label>
+                        <input
+                            class="midiccparam" id="Osc2PtchWh"
+                            data-midiChannel="1" data-cclsb="40"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc2WTInt">Oscillator 2 Wavetable Interpolate (CC 30)</label>
+                        <input
+                            class="midiccparam" id="Osc2WTInt"
+                            data-midiChannel="1" data-cclsb="30"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
                 </div>
-                <div class="controller">
-                    <label for="OscTimbre">Oscillator Timbre (CC 12)</label>
-                    <input
-                        class="midiccparam" id="OscTimbre"
-                        data-midiChannel="1" data-cclsb="12"
-                        data-displayvaluefunc="hundred"
-                        max="127" min="0" type="range" >
-                </div>
-                <div class="controller">
-                    <label for="OscShape">Oscillator Shape (CC 13)</label>
-                    <input
-                        class="midiccparam" id="OscShape"
-                        data-midiChannel="1" data-cclsb="13"
-                        data-displayvaluefunc="hundred"
-                        max="127" min="0" type="range" >
+            </div>
+            <div class="controlflexlayout">
+                <div class="controlitemgroup">
+                    <h3>Oscillator 3 Parameters</h3>
+                    <div class="controller">
+                        <label for="Osc3Semi">Oscillator 3 Semitone Offset (CC 48)</label>
+                        <input
+                            class="midiccparam" id="Osc3Semi"
+                            data-midiChannel="1" data-cclsb="48"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc3Cents">Oscillator 3 Cents Offset (CC 49)</label>
+                        <input
+                            class="midiccparam" id="Osc3Cents"
+                            data-midiChannel="1" data-cclsb="49"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc3VSync">Oscillator 3 Sync Depth (CC 44)</label>
+                        <input
+                            class="midiccparam" id="Osc3VSync"
+                            data-midiChannel="1" data-cclsb="44"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc3Wave">Oscillator 3 Waveform (CC 41)</label>
+                        <input
+                            class="midiccparam" id="Osc3Wave"
+                            data-midiChannel="1" data-cclsb="41"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc3Pw-Idx">Oscillator 3 Pulsewidth/Index (CC 43)</label>
+                        <input
+                            class="midiccparam" id="Osc3Pw-Idx"
+                            data-midiChannel="1" data-cclsb="31"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc3Hard">Oscillator 3 Hardness (CC 45)</label>
+                        <input
+                            class="midiccparam" id="Osc3Hard"
+                            data-midiChannel="1" data-cclsb="45"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc3Dense">Oscillator 3 Density (CC 46)</label>
+                        <input
+                            class="midiccparam" id="Osc3Dense"
+                            data-midiChannel="1" data-cclsb="46"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc3DsnDtn">Oscillator 3 Density Detune (CC 47)</label>
+                        <input
+                            class="midiccparam" id="Osc3DsmDtn"
+                            data-midiChannel="1" data-cclsb="47"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc3PtchWh">Oscillator 3 Pitch Wheel (CC 50)</label>
+                        <input
+                            class="midiccparam" id="Osc3PtchWh"
+                            data-midiChannel="1" data-cclsb="50"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
+                    <div class="controller">
+                        <label for="Osc3WTInt">Oscillator 3 Wavetable Interpolate (CC 42)</label>
+                        <input
+                            class="midiccparam" id="Osc3WTInt"
+                            data-midiChannel="1" data-cclsb="42"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range" >
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <!-- END: Oscillators-->
 
-    <!-- BEGIN: Analog Filter-->
+    <!-- BEGIN: Mixer-->
     <div class="controlpanel">
-        <h2>Analog Filter</h2>
+        <h2>Mixer</h2>
         <div class="controlflexlayout">
             <div class="controlitemgroup">
+                <h3>Oscillators</h3>
                 <div class="controller">
-                    <label for="FILTCutoff">Filter Cutoff (CC 23)</label>
+                    <label for="Osc1Level">Oscillator 1 Level (CC 51)</label>
                     <input
-                        class="midiccparam" id="FILTCutoff"
-                        data-midiChannel="1" data-cclsb="23"
+                        class="midiccparam" id="Osc1Level"
+                        data-midiChannel="1" data-cclsb="51"
                         data-displayvaluefunc="hundred"
                         max="127" min="0" type="range" >
                 </div>
                 <div class="controller">
-                    <label for="FILTRes">Filter Resonance (CC 83)</label>
+                    <label for="Osc2Level">Oscillator 2 Level (CC 52)</label>
                     <input
-                        class="midiccparam" id="FILTRes"
+                        class="midiccparam" id="Osc2Level"
+                        data-midiChannel="1" data-cclsb="52"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="Osc3Level">Oscillator 3 Level (CC 53)</label>
+                    <input
+                        class="midiccparam" id="Osc3Level"
+                        data-midiChannel="1" data-cclsb="53"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <h3>Ring Modulation</h3>
+                <div class="controller">
+                    <label for="RM1-3Level">Oscillators 1*3 Ring Mod Level (CC 54)</label>
+                    <input
+                        class="midiccparam" id="RM1-3Level"
+                        data-midiChannel="1" data-cclsb="54"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="RM2-3Level">Oscillators 2*3 Ring Mod Level (CC 55)</label>
+                    <input
+                        class="midiccparam" id="RM1-3Level"
+                        data-midiChannel="1" data-cclsb="55"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <h3>Noise Level</h3>
+                <div class="controller">
+                    <label for="NoiseLevel">Noise Level (CC 56)</label>
+                    <input
+                        class="midiccparam" id="NoiseLevel"
+                        data-midiChannel="1" data-cclsb="56"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <h3>Pre/Post-FX Mix</h3>
+                <div class="controller">
+                    <label for="PreFXLvl">Pre-FX Level (CC 58)</label>
+                    <input
+                        class="midiccparam" id="PreFXLvl"
+                        data-midiChannel="1" data-cclsb="58"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="PostFXLvl">Post-FX Level (CC 59)</label>
+                    <input
+                        class="midiccparam" id="PostFXLvl"
+                        data-midiChannel="1" data-cclsb="59"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END: Mixer-->
+
+    <!-- BEGIN: Filters-->
+    <div class="controlpanel">
+        <h2>Filters</h2>
+        <div class="controlflexlayout">
+            <div class="controlitemgroup">
+                <h3>Global Filter Parameters</h3>
+                <div class="controller">
+                    <label for="FBalance">Filter Balance (CC 61)</label>
+                    <input
+                        class="midiccparam" id="FBalance"
+                        data-midiChannel="1" data-cclsb="61"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="FRouting">Filter Routing (CC 60)</label>
+                    <input
+                        class="midiccparam" id="FRouting"
+                        data-midiChannel="1" data-cclsb="60"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="FreqLink">Filter Frequency Link (CC ??)</label>
+                    <input
+                        class="midiccparam" id="FreqLink"
+                        data-midiChannel="1" data-cclsb="??"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="ResLink">Filter Resonance Link (CC ??)</label>
+                    <input
+                        class="midiccparam" id="ResLink"
+                        data-midiChannel="1" data-cclsb="??"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+            </div>
+            <div class="controlitemgroup">
+                <h3>Filter 1</h3>
+                <div class="controller">
+                    <label for="F1Freq">Filter 1 Cutoff Frequency (CC 74)</label>
+                    <input
+                        class="midiccparam" id="F1Freq"
+                        data-midiChannel="1" data-cclsb="74"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="F1Res">Filter 1 Resonance (CC 71)</label>
+                    <input
+                        class="midiccparam" id="F1Res"
+                        data-midiChannel="1" data-cclsb="71"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="F1Env2">Filter 1 Envelope 2 Depth (CC 79)</label>
+                    <input
+                        class="midiccparam" id="F1Env2"
+                        data-midiChannel="1" data-cclsb="79"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="F1Track">Filter 1 Keyboard Tracking (CC 69)</label>
+                    <input
+                        class="midiccparam" id="F1Track"
+                        data-midiChannel="1" data-cclsb="69"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="F1Type">Filter 1 Type (CC 68)</label>
+                    <input
+                        class="midiccparam" id="F1Type"
+                        data-midiChannel="1" data-cclsb="68"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="F1DAmnt">Filter 1 Drive Amount (CC 63)</label>
+                    <input
+                        class="midiccparam" id="F1DAmnt"
+                        data-midiChannel="1" data-cclsb="63"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="F1DType">Filter 1 Drive Type (CC 65)</label>
+                    <input
+                        class="midiccparam" id="F1DType"
+                        data-midiChannel="1" data-cclsb="65"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="F1QNorm">Filter 1 Q Normalize (CC 78)</label>
+                    <input
+                        class="midiccparam" id="F1QNorm"
+                        data-midiChannel="1" data-cclsb="78"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+            </div>
+            <div class="controlitemgroup">
+                <h3>Filter 2</h3>
+                <div class="controller">
+                    <label for="F2Freq">Filter 2 Cutoff Frequency (CC 83)</label>
+                    <input
+                        class="midiccparam" id="F2Freq"
                         data-midiChannel="1" data-cclsb="83"
                         data-displayvaluefunc="hundred"
                         max="127" min="0" type="range" >
                 </div>
-            </div>
-        </div>
-    </div>
-    <!-- END: Analog Filter-->
-
-    <!-- BEGIN: Cycling Envelope-->
-    <div class="controlpanel">
-        <h2>Cycling Envelope</h2>
-        <div class="controlflexlayout">
-            <div class="controlitemgroup">
                 <div class="controller">
-                    <label for="CycEnvRise">Cycling Envelope Rise (CC 102)</label>
+                    <label for="F2Res">Filter 2 Resonance (CC 85)</label>
                     <input
-                        class="midiccparam" id="CycEnvRise"
-                        data-midiChannel="1" data-cclsb="102"
+                        class="midiccparam" id="F2Res"
+                        data-midiChannel="1" data-cclsb="85"
                         data-displayvaluefunc="hundred"
                         max="127" min="0" type="range" >
                 </div>
                 <div class="controller">
-                    <label for="CycEnvFall">Cycling Envelope Fall (CC 103)</label>
+                    <label for="F2Env2">Filter 2 Envelope 2 Depth (CC 87)</label>
                     <input
-                        class="midiccparam" id="CycEnvFall"
-                        data-midiChannel="1" data-cclsb="103"
+                        class="midiccparam" id="F2Env2"
+                        data-midiChannel="1" data-cclsb="87"
                         data-displayvaluefunc="hundred"
                         max="127" min="0" type="range" >
                 </div>
                 <div class="controller">
-                    <label for="CycEnvAmt">Cycling Envelope Amount (CC 24)</label>
+                    <label for="F2Track">Filter 2 Keyboard Tracking (CC 84)</label>
                     <input
-                        class="midiccparam" id="CycEnvAmt"
-                        data-midiChannel="1" data-cclsb="24"
+                        class="midiccparam" id="F2Track"
+                        data-midiChannel="1" data-cclsb="84"
                         data-displayvaluefunc="hundred"
                         max="127" min="0" type="range" >
                 </div>
                 <div class="controller">
-                    <label for="CycEnvHold">Cycling Envelope Hold (CC 28)</label>
+                    <label for="F2Type">Filter 2 Type (CC 82)</label>
                     <input
-                        class="midiccparam" id="CycEnvHold"
-                        data-midiChannel="1" data-cclsb="28"
-                        data-displayvaluefunc="hundred"
-                        max="127" min="0" type="range" >
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- END: Cycling Envelope-->
-
-    <!-- BEGIN: Arp-->
-    <div class="controlpanel">
-        <h2>Arpeggio</h2>
-        <div class="controlflexlayout">
-            <div class="controlitemgroup">
-                <div class="controller">
-                    <label for="ArpRateFree">Arpeggio Rate - Free Running (CC 91)</label>
-                    <input
-                        class="midiccparam" id="ArpRateFree"
-                        data-midiChannel="1" data-cclsb="91"
+                        class="midiccparam" id="F2Type"
+                        data-midiChannel="1" data-cclsb="82"
                         data-displayvaluefunc="hundred"
                         max="127" min="0" type="range" >
                 </div>
                 <div class="controller">
-                    <label for="ArpRateSync">Arpeggio Rate - Tempo Sync (CC 92)</label>
+                    <label for="F2DAmnt">Filter 2 Drive Amount (CC 80)</label>
                     <input
-                        class="midiccparam" id="ArpRateSync"
-                        data-midiChannel="1" data-cclsb="92"
+                        class="midiccparam" id="F2DAmnt"
+                        data-midiChannel="1" data-cclsb="80"
                         data-displayvaluefunc="hundred"
                         max="127" min="0" type="range" >
                 </div>
                 <div class="controller">
-                    <label for="Spice">Spice (CC 2)</label>
+                    <label for="F2DType">Filter 2 Drive Type (CC 81)</label>
                     <input
-                        class="midiccparam" id="Spice"
-                        data-midiChannel="1" data-cclsb="2"
+                        class="midiccparam" id="F2DType"
+                        data-midiChannel="1" data-cclsb="81"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="F2QNorm">Filter 2 Q Normalize (CC 86)</label>
+                    <input
+                        class="midiccparam" id="F2QNorm"
+                        data-midiChannel="1" data-cclsb="86"
                         data-displayvaluefunc="hundred"
                         max="127" min="0" type="range" >
                 </div>
             </div>
         </div>
     </div>
-    <!-- END: Arp-->
-
-    <!-- BEGIN: LFO-->
-    <div class="controlpanel">
-        <h2>LFO</h2>
-        <div class="controlflexlayout">
-            <div class="controlitemgroup">
-                <div class="controller">
-                    <label for="LFORateFree">LFO Rate - Free Running (CC 93)</label>
-                    <input
-                        class="midiccparam" id="LFORateFree"
-                        data-midiChannel="1" data-cclsb="93"
-                        data-displayvaluefunc="hundred"
-                        max="127" min="0" type="range" >
-                </div>
-                <div class="controller">
-                    <label for="LFORateSync">LFO Rate - Tempo Sync (CC 94)</label>
-                    <input
-                        class="midiccparam" id="LFORateSync"
-                        data-midiChannel="1" data-cclsb="94"
-                        data-displayvaluefunc="hundred"
-                        max="127" min="0" type="range" >
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- END: LFO-->
-
-    <!-- BEGIN: Envelope-->
-    <div class="controlpanel">
-        <h2>Envelope</h2>
-        <div class="controlflexlayout">
-            <div class="controlitemgroup">
-                <div class="controller">
-                    <label for="EnvAttack">Envelope Attack (CC 105)</label>
-                    <input
-                        class="midiccparam" id="EnvAttack"
-                        data-midiChannel="1" data-cclsb="105"
-                        data-displayvaluefunc="hundred"
-                        max="127" min="0" type="range" >
-                </div>
-                <div class="controller">
-                    <label for="EnvDecay">Envelope Decay (CC 106)</label>
-                    <input
-                        class="midiccparam" id="EnvDecay"
-                        data-midiChannel="1" data-cclsb="106"
-                        data-displayvaluefunc="hundred"
-                        max="127" min="0" type="range" >
-                </div>
-                <div class="controller">
-                    <label for="EnvSus">Envelope Sustain (CC 29)</label>
-                    <input
-                        class="midiccparam" id="EnvSus"
-                        data-midiChannel="1" data-cclsb="29"
-                        data-displayvaluefunc="hundred"
-                        max="127" min="0" type="range" >
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- END: Envelope-->
+    <!-- END: Filters-->
 
 <div id="ccParameterDisplay">100</div>
 </body>
