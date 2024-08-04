@@ -203,7 +203,7 @@
                         max="127" min="0" type="range" >
                 </div>
             </div>
-            <div class="controlflexlayout">
+            <div class="controlitemgroup">
                 <div class="controlitemgroup">
                     <h3>Oscillator 1 Parameters</h3>
                     <div class="controller">
@@ -288,7 +288,7 @@
                     </div>
                 </div>
             </div>
-            <div class="controlflexlayout">
+            <div class="controlitemgroup">
                 <div class="controlitemgroup">
                     <h3>Oscillator 2 Parameters</h3>
                     <div class="controller">
@@ -373,89 +373,87 @@
                     </div>
                 </div>
             </div>
-            <div class="controlflexlayout">
-                <div class="controlitemgroup">
-                    <h3>Oscillator 3 Parameters</h3>
-                    <div class="controller">
-                        <label for="Osc3Semi">Oscillator 3 Semitone Offset (CC 48)</label>
-                        <input
-                            class="midiccparam" id="Osc3Semi"
-                            data-midiChannel="1" data-cclsb="48"
-                            data-displayvaluefunc="hundred"
-                            max="127" min="0" type="range" >
-                    </div>
-                    <div class="controller">
-                        <label for="Osc3Cents">Oscillator 3 Cents Offset (CC 49)</label>
-                        <input
-                            class="midiccparam" id="Osc3Cents"
-                            data-midiChannel="1" data-cclsb="49"
-                            data-displayvaluefunc="hundred"
-                            max="127" min="0" type="range" >
-                    </div>
-                    <div class="controller">
-                        <label for="Osc3VSync">Oscillator 3 Sync Depth (CC 44)</label>
-                        <input
-                            class="midiccparam" id="Osc3VSync"
-                            data-midiChannel="1" data-cclsb="44"
-                            data-displayvaluefunc="hundred"
-                            max="127" min="0" type="range" >
-                    </div>
-                    <div class="controller">
-                        <label for="Osc3Wave">Oscillator 3 Waveform (CC 41)</label>
-                        <input
-                            class="midiccparam" id="Osc3Wave"
-                            data-midiChannel="1" data-cclsb="41"
-                            data-displayvaluefunc="hundred"
-                            max="127" min="0" type="range" >
-                    </div>
-                    <div class="controller">
-                        <label for="Osc3Pw-Idx">Oscillator 3 Pulsewidth/Index (CC 43)</label>
-                        <input
-                            class="midiccparam" id="Osc3Pw-Idx"
-                            data-midiChannel="1" data-cclsb="31"
-                            data-displayvaluefunc="hundred"
-                            max="127" min="0" type="range" >
-                    </div>
-                    <div class="controller">
-                        <label for="Osc3Hard">Oscillator 3 Hardness (CC 45)</label>
-                        <input
-                            class="midiccparam" id="Osc3Hard"
-                            data-midiChannel="1" data-cclsb="45"
-                            data-displayvaluefunc="hundred"
-                            max="127" min="0" type="range" >
-                    </div>
-                    <div class="controller">
-                        <label for="Osc3Dense">Oscillator 3 Density (CC 46)</label>
-                        <input
-                            class="midiccparam" id="Osc3Dense"
-                            data-midiChannel="1" data-cclsb="46"
-                            data-displayvaluefunc="hundred"
-                            max="127" min="0" type="range" >
-                    </div>
-                    <div class="controller">
-                        <label for="Osc3DsnDtn">Oscillator 3 Density Detune (CC 47)</label>
-                        <input
-                            class="midiccparam" id="Osc3DsmDtn"
-                            data-midiChannel="1" data-cclsb="47"
-                            data-displayvaluefunc="hundred"
-                            max="127" min="0" type="range" >
-                    </div>
-                    <div class="controller">
-                        <label for="Osc3PtchWh">Oscillator 3 Pitch Wheel (CC 50)</label>
-                        <input
-                            class="midiccparam" id="Osc3PtchWh"
-                            data-midiChannel="1" data-cclsb="50"
-                            data-displayvaluefunc="hundred"
-                            max="127" min="0" type="range" >
-                    </div>
-                    <div class="controller">
-                        <label for="Osc3WTInt">Oscillator 3 Wavetable Interpolate (CC 42)</label>
-                        <input
-                            class="midiccparam" id="Osc3WTInt"
-                            data-midiChannel="1" data-cclsb="42"
-                            data-displayvaluefunc="hundred"
-                            max="127" min="0" type="range" >
-                    </div>
+            <div class="controlitemgroup">
+                <h3>Oscillator 3 Parameters</h3>
+                <div class="controller">
+                    <label for="Osc3Semi">Oscillator 3 Semitone Offset (CC 48)</label>
+                    <input
+                        class="midiccparam" id="Osc3Semi"
+                        data-midiChannel="1" data-cclsb="48"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="Osc3Cents">Oscillator 3 Cents Offset (CC 49)</label>
+                    <input
+                        class="midiccparam" id="Osc3Cents"
+                        data-midiChannel="1" data-cclsb="49"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="Osc3VSync">Oscillator 3 Sync Depth (CC 44)</label>
+                    <input
+                        class="midiccparam" id="Osc3VSync"
+                        data-midiChannel="1" data-cclsb="44"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="Osc3Wave">Oscillator 3 Waveform (CC 41)</label>
+                    <input
+                        class="midiccparam" id="Osc3Wave"
+                        data-midiChannel="1" data-cclsb="41"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="Osc3Pw-Idx">Oscillator 3 Pulsewidth/Index (CC 43)</label>
+                    <input
+                        class="midiccparam" id="Osc3Pw-Idx"
+                        data-midiChannel="1" data-cclsb="31"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="Osc3Hard">Oscillator 3 Hardness (CC 45)</label>
+                    <input
+                        class="midiccparam" id="Osc3Hard"
+                        data-midiChannel="1" data-cclsb="45"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="Osc3Dense">Oscillator 3 Density (CC 46)</label>
+                    <input
+                        class="midiccparam" id="Osc3Dense"
+                        data-midiChannel="1" data-cclsb="46"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="Osc3DsnDtn">Oscillator 3 Density Detune (CC 47)</label>
+                    <input
+                        class="midiccparam" id="Osc3DsmDtn"
+                        data-midiChannel="1" data-cclsb="47"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="Osc3PtchWh">Oscillator 3 Pitch Wheel (CC 50)</label>
+                    <input
+                        class="midiccparam" id="Osc3PtchWh"
+                        data-midiChannel="1" data-cclsb="50"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="Osc3WTInt">Oscillator 3 Wavetable Interpolate (CC 42)</label>
+                    <input
+                        class="midiccparam" id="Osc3WTInt"
+                        data-midiChannel="1" data-cclsb="42"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
                 </div>
             </div>
         </div>
@@ -716,6 +714,288 @@
         </div>
     </div>
     <!-- END: Filters-->
+
+    <!-- BEGIN: Envelopes-->
+     <div class="controlpanel">
+        <h2>Envelopes</h2>
+        <div class="controlflexlayout">
+            <div class="controlitemgroup">
+                <h3>Amplitude Envelope (1)</h3>
+                <div class="controller">
+                    <label for="E1Attack">Amplitude Attack (CC 73)</label>
+                    <input
+                        class="midiccparam" id="E1Attack"
+                        data-midiChannel="1" data-cclsb="73"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E1Decay">Amplitude Decay (CC 75)</label>
+                    <input
+                        class="midiccparam" id="E1Decay"
+                        data-midiChannel="1" data-cclsb="75"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E1Sustain">Amplitude Sustain (CC 70)</label>
+                    <input
+                        class="midiccparam" id="E1Sustain"
+                        data-midiChannel="1" data-cclsb="70"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E1Release">Amplitude Release (CC 72)</label>
+                    <input
+                        class="midiccparam" id="E1Release"
+                        data-midiChannel="1" data-cclsb="72"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E1Velocity">Amplitude Velocity Depth (CC 108)</label>
+                    <input
+                        class="midiccparam" id="E1Velocity"
+                        data-midiChannel="1" data-cclsb="108"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E1Rept">Amplitude Attack/Decay Repeats (CC 111)</label>
+                    <input
+                        class="midiccparam" id="E1Rept"
+                        data-midiChannel="1" data-cclsb="111"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E1TTrig">Amplitude Touch Trigger (CC 117)</label>
+                    <input
+                        class="midiccparam" id="E1TTrig"
+                        data-midiChannel="1" data-cclsb="117"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E1MTrig">Amplitude M Trigger (CC ??)</label>
+                    <input
+                        class="midiccparam" id="E1MTrig"
+                        data-midiChannel="1" data-cclsb="??"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E1AtSlope">Amplitude Attack Slope (CC 115)</label>
+                    <input
+                        class="midiccparam" id="E1AtSlope"
+                        data-midiChannel="1" data-cclsb="115"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E1DecSlope">Amplitude Decay Slope (CC 116)</label>
+                    <input
+                        class="midiccparam" id="E1DecSlope"
+                        data-midiChannel="1" data-cclsb="116"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E1AttTk">Amplitude Attack Track (CC 112)</label>
+                    <input
+                        class="midiccparam" id="E1AttTk"
+                        data-midiChannel="1" data-cclsb="112"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E1DecTk">Amplitude Decay Track (CC 113)</label>
+                    <input
+                        class="midiccparam" id="E1DecTk"
+                        data-midiChannel="1" data-cclsb="113"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E1SusRt">Amplitude Sustain Rate (CC 109)</label>
+                    <input
+                        class="midiccparam" id="E1SusRt"
+                        data-midiChannel="1" data-cclsb="109"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E1SusTm">Amplitude Sustain Time (CC 110)</label>
+                    <input
+                        class="midiccparam" id="E1SusTm"
+                        data-midiChannel="1" data-cclsb="110"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E1LevelTk">Amplitude Level Track (CC 114)</label>
+                    <input
+                        class="midiccparam" id="E1LevelTk"
+                        data-midiChannel="1" data-cclsb="114"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E1LevelTkNte">Amplitude Level Track Note (CC 61)</label>
+                    <input
+                        class="midiccparam" id="E1LevelTkNte"
+                        data-midiChannel="1" data-cclsb="61"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+            </div>
+            <div class="controlitemgroup">
+                <h3>Filter Envelope (2)</h3>
+                <div class="controller">
+                    <label for="E2Attack">Filter Attack (NRPN 0:1)</label>
+                    <input
+                        class="midiccparam" id="E2Attack"
+                        data-midiChannel="1" data-cclsb="73"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E2Decay">Filter Decay (NRPN 0:2)</label>
+                    <input
+                        class="midiccparam" id="E2Decay"
+                        data-midiChannel="1" data-cclsb="75"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E2Sustain">Filter Sustain (NRPN 0:3)</label>
+                    <input
+                        class="midiccparam" id="E2Sustain"
+                        data-midiChannel="1" data-cclsb="70"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E2Release">Filter Release (NRPN 0:4)</label>
+                    <input
+                        class="midiccparam" id="E2Release"
+                        data-midiChannel="1" data-cclsb="72"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E2Velocity">Filter Velocity Depth (NRPN 0:0)</label>
+                    <input
+                        class="midiccparam" id="E2Velocity"
+                        data-midiChannel="1" data-cclsb="108"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E2Rept">Filter Attack/Decay Repeats (NRPN 0:7)</label>
+                    <input
+                        class="midiccparam" id="E2Rept"
+                        data-midiChannel="1" data-cclsb="111"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E2TTrig">Filter Touch Trigger (NRPN 0:8)</label>
+                    <input
+                        class="midiccparam" id="E2TTrig"
+                        data-midiChannel="1" data-cclsb="117"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E2MTrig">Filter M Trigger (NRPN ??)</label>
+                    <input
+                        class="midiccparam" id="E2MTrig"
+                        data-midiChannel="1" data-cclsb="??"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E2AtSlope">Filter Attack Slope (NRPN 0:11)</label>
+                    <input
+                        class="midiccparam" id="E2AtSlope"
+                        data-midiChannel="1" data-cclsb="115"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E2DecSlope">Filter Decay Slope (NRPN 0:12)</label>
+                    <input
+                        class="midiccparam" id="E2DecSlope"
+                        data-midiChannel="1" data-cclsb="116"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E2AttTk">Filter Attack Track (NRPN 0:8)</label>
+                    <input
+                        class="midiccparam" id="E2AttTk"
+                        data-midiChannel="1" data-cclsb="112"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E2DecTk">Filter Decay Track (NRPN 0:9)</label>
+                    <input
+                        class="midiccparam" id="E2DecTk"
+                        data-midiChannel="1" data-cclsb="113"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E2SusRt">Filter Sustain Rate (NRPN 0:5)</label>
+                    <input
+                        class="midiccparam" id="E2SusRt"
+                        data-midiChannel="1" data-cclsb="109"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E2SusTm">Filter Sustain Time (NRPN 0:6)</label>
+                    <input
+                        class="midiccparam" id="E2SusTm"
+                        data-midiChannel="1" data-cclsb="110"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E2LevelTk">Filter Level Track (NRPN 0:10)</label>
+                    <input
+                        class="midiccparam" id="E2LevelTk"
+                        data-midiChannel="1" data-cclsb="114"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="E2LevelTkNte">Filter Level Track Note (NRPN ???)</label>
+                    <input
+                        class="midiccparam" id="E2LevelTkNte"
+                        data-midiChannel="1" data-cclsb="61"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+            </div>
+            <div class="controlitemgroup">
+                <h3>Envelope 3</h3>
+            </div>
+            <div class="controlitemgroup">
+                <h3>Envelope 4</h3>
+            </div>
+            <div class="controlitemgroup">
+                <h3>Envelope 5</h3>
+            </div>
+            <div class="controlitemgroup">
+                <h3>Envelope 6</h3>
+            </div>
+        </div>
+     </div>
+    <!-- END: Envelopes-->
 
 <div id="ccParameterDisplay">100</div>
 </body>
