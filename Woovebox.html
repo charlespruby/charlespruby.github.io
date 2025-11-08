@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Woovebox Web Editor</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" />
+    <link href="style/Wooveboxstyle.css" rel="stylesheet" />
+    <script src="./script/ccynthmata.js" type="text/javascript"></script>
+    <script src="./res/Wooveboxinit_patch.js" type="text/javascript"></script>
+    <script>
+        // parameter display transforms:
+        let Doubler = (value) => value === 127 ? 255 : value * 2;
+        let Hundred = (value) => value === 127 ? 100 : Math.round(Math.round(((value - 64) / 64 * 200)) / 2); // yeah, I don't get it either
+        let OnOffer = (value) => value < 64 ? "Off" : "On";
+        let OnetoTen = (value) => value === 127 ? 10 : Math.round(Math.round(((value - 64) / 64 * 20)))
+        let OnetoTwenty = (value) => value === 127 ? 20 : Math.round(Math.round(((value - 64) / 64 * 40)))
+        let OnetoThirty = (value) => value === 127 ? 30 : Math.round(Math.round(((value - 64) / 64 * 60)))
+
+        var cynth;
+        let init = ()=>{
+            cynth = new Ccynthmata(
+                {
+                    initPatch: InitPatch, 
+                    autoHideParameterDisplay: true,
+                        doubler: Doubler,
+                        hundred: Hundred,
+                        onoffer: OnOffer,
+                        onetoten: OnetoTen,
+                        onetotwenty: OnetoTwenty,
+                        onetoThirty: OnetoThirty,
+                }); 
+            cynth.init();
+        }
+        let showHideInstructions = ()=>{
+            let instructions = document.getElementById("instructions");
+            if(instructions.classList.contains("hiddenInstructions")){
+                instructions.classList.remove("hiddenInstructions");
+                instructions.classList.add("shownInstructions");
+            }else{
+                instructions.classList.remove("shownInstructions");
+                instructions.classList.add("hiddenInstructions");
+            }
+        }
+    </script>
+</head>
+<body onload="init()">
+<div id="title-head">
+            <span>Woovebox Web Editor</span>
+</div>
+<div id="title-byline">
+    <span>by Charlie Ruby with a hefty bit of code taken from 
+        <a href="http://oscillatorsink.com">oscillatorsink</a>
+    </span>
+</div>
+<div id="subtitle-head">
+    <span>free online editor for the <a href="https://www.woovebox.com">Woovebox</a>
+        <br>BETA VERSION</span>
+</div>
+<div id="main-content">
+    <div class="controlpanel">
+        <div class="controlitemgroup">
+        <h2>Instructions</h2>
+        <div class="showHide"><a href="#" onclick="showHideInstructions()">show / hide</a></div>
+        <div id="instructions" class="hiddenInstructions">
+            <p>This is an editor I tried to make so I can edit parameters of my Woovebox unit in a graphic interface. I am not a coder and I basically copied oscillatorsink's code for the Volca Drum and slowly edited things for my unit.</p>
+            <p>Connect your Woovebox to your chosen MIDI interface or via USB.</p>
+            <p>Select that MIDI interface in the Midi Device Setup (default channel is 1).</p>
+            <p>The settings will be sent to your sound module automatically when the interface is chosen.</p>
+            <p>Make your patch!</p>
+            <p>My preferred way to "save" your patch is by clicking "Create Sharable Patch Link" and saving the link somewhere (and don't forget to share it!).
+                You can also save a stream of MIDI CC data which can be played back using a DAW etc. by clicking "Save Patch". You can also save the current
+                state of the patch on your Woovebox.</p>
+            <p>Have fun!</p>
+            <p>If you have questions...I am probably not the one to ask, so I would point you to oscillatorsink. You can get hold of him on one of many social media platforms:</p>
+            <ul>
+                <li><a href="https://www.youtube.com/oscillatorsink">YouTube</a></li>
+                <li><a href="https://www.facebook.com/OscillatorSink/">Facebook</a></li>
+                <li><a href="https://twitter.com/oscillatorsink">Twitter</a></li>
+            </ul>
+            <p>This is the library by oscillatorsink I used to build this patch editor here:
+                <a href="https://github.com/synthmata/ccynthmata">ccynthmata</a></p>
+        </div>
+        </div>
+    </div>
+    <div class="controlpanel">
+        <h2>Setup</h2>
+        <div class="controlflexlayout">
+            <div class="controlitemgroup" id="midiSetup">
+                <h3>Midi Device Setup</h3>
+            </div>
+            <div class="controlitemgroup" id="saveLoadPanel">
+                <h3>Save/Load/Export/Share</h3>
+            </div>
+        </div>
+    </div>
+    <div class="controlpanel">
+        <div class="controlitemgroup">
+            <h3>Patch Name</h3>
+            <label for="ccynthmataPatchName" style="display: none">Patch Name</label>
+            <input type="text" id="ccynthmataPatchName" maxlength="64"/>
+        </div>
+    </div>
+
+
+    <!-- BEGIN: Synth Settings-->
+    <div class="controlpanel">
+        <h2>Synth Settings</h2>
+        <div class="controlflexlayout">
+            <div class="controlitemgroup">
+                <h3>Oscillator Settings</h3>
+                <div class="radiogroup">
+                    <span>Oscillator Type (CC 53)</span>
+                    <input
+                        type="radio" name="OSCType" value="0" checked
+                        class="midicctotal" id="OSCType-SAW"
+                        data-midiChannel="1" data-cclsb="53"/>
+                    <label for="OSCType-SAW">Sawtooth</label>
+                    <input
+                        type="radio" name="OSCType" value="25" checked
+                        class="midicctotal" id="OSCType-TRI"
+                        data-midiChannel="1" data-cclsb="53"/>
+                    <label for="OSCType-TRI">Triangle</label>
+                    <input
+                        type="radio" name="OSCType" value="50" checked
+                        class="midicctotal" id="OSCType-SQR"
+                        data-midiChannel="1" data-cclsb="53"/>
+                    <label for="OSCType-SQR">Square</label>
+                    <input
+                        type="radio" name="OSCType" value="75" checked
+                        class="midicctotal" id="OSCType-VPM"
+                        data-midiChannel="1" data-cclsb="53"/>
+                    <label for="OSCType-VPM">Variable Pulse</label>
+                    <input
+                        type="radio" name="OSCType" value="127" checked
+                        class="midicctotal" id="OSCType-WAVES"
+                        data-midiChannel="1" data-cclsb="53"/>
+                    <label for="OSCType-WAVES">Wavetable</label>
+                </div>
+                <div class="controller">
+                    <label for="OSCShape">Oscillator Shape (CC 54)</label>
+                    <input
+                        class="midiccparam" id="OSCShape"
+                        data-midiChannel="1" data-cclsb="54"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+                <div class="controller">
+                    <label for="OSCAlt">Oscillator Alternative Function (CC 55)</label>
+                    <input
+                        class="midiccparam" id="OSCAlt"
+                        data-midiChannel="1" data-cclsb="55"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range" >
+                </div>
+            </div>
+            <div class="controlitemgroup">
+                <h3>Filter Settings</h3>
+                <div class="controller">
+                    <div class="radiogroup">
+                        <span>Filter Type (CC 42): </span>
+                        <input
+                            type="radio" name="FILTType" value="0" checked
+                            class="midicctotal" id="FILTType-LP2"
+                            data-midiChannel="1" data-cclsb="42"/>
+                        <label for="FILTType-LP2">LP2</label>
+                        <input
+                            type="radio" name="FILTType" value="18" checked
+                            class="midicctotal" id="FILTType-LP4"
+                            data-midiChannel="1" data-cclsb="42"/>
+                        <label for="FILTType-LP4">LP4</label>
+                        <input
+                            type="radio" name="FILTType" value="36" checked
+                            class="midicctotal" id="FILTType-BP2"
+                            data-midiChannel="1" data-cclsb="42"/>
+                        <label for="FILTType-BP2">BP2</label>
+                        <input
+                            type="radio" name="FILTType" value="54" checked
+                            class="midicctotal" id="FILTType-BP4"
+                            data-midiChannel="1" data-cclsb="42"/>
+                        <label for="FILTType-BP4">BP4</label>
+                        <input
+                            type="radio" name="FILTType" value="72" checked
+                            class="midicctotal" id="FILTType-HP2"
+                            data-midiChannel="1" data-cclsb="42"/>
+                        <label for="FILTType-HP2">HP2</label>
+                        <input
+                            type="radio" name="FILTType" value="90" checked
+                            class="midicctotal" id="FILTType-HP4"
+                            data-midiChannel="1" data-cclsb="42"/>
+                        <label for="FILTType-HP4">HP4</label>
+                        <input
+                            type="radio" name="FILTType" value="127" checked
+                            class="midicctotal" id="FILTType-OFF"
+                            data-midiChannel="1" data-cclsb="42"/>
+                        <label for="FILTType-OFF">OFF</label>
+                    </div>
+                    <div class="controller">
+                        <label for="FILTCutoff">Filter Cutoff (CC 43)</label>
+                        <input
+                            class="midiccparam" id="FILTCutoff"
+                            data-midiChannel="1" data-cclsb="43"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range">
+                    </div>
+                    <div class="controller">
+                        <label for="FILTRes">Filter Resonance (CC 44)</label>
+                        <input
+                            class="midiccparam" id="RILTRes"
+                            data-midiChannel="1" data-cclsb="44"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range">
+                    </div>
+                    <div class="controller">
+                        <label for="FILTSweepDepth">Filter Sweep Depth (CC 45)</label>
+                        <input
+                            class="midiccparam" id="FILTSweepDepth"
+                            data-midiChannel="1" data-cclsb="45"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range">
+                    </div>
+                    <div class="controller">
+                        <label for="FILTSweeprate">Filter Sweep Rate (CC 46)</label>
+                        <input
+                            class="midiccparam" id="FILTSweeprate"
+                            data-midiChannel="1" data-cclsb="46"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range">
+                    </div>
+                </div>
+            </div>
+            <div class="controlitemgroup">
+                <h3>Envelope Settings</h3>
+                <div class="controller">
+                    <div class="radiogroup">
+                        <span>Envelope Type (CC 14): </span>
+                        <input
+                            type="radio" name="ENVType" value="0" checked
+                            class="midicctotal" id="ENVType-ADSR"
+                            data-midiChannel="1" data-cclsb="14"/>
+                        <label for="ENVType-ADSR">ADSR</label>
+                        <input
+                            type="radio" name="ENVType" value="25"
+                            class="midicctotal" id="ENVType-AHR"
+                            data-midiChannel="1" data-cclsb="14"/>
+                        <label for="ENVType-AHR">AHR</label>
+                        <input
+                            type="radio" name="ENVType" value="50"
+                            class="midicctotal" id="ENVType-AR"
+                            data-midiChannel="1" data-cclsb="14"/>
+                        <label for="ENVType-AR">AR</label>
+                        <input
+                            type="radio" name="ENVType" value="75"
+                            class="midicctotal" id="ENVType-Loop"
+                            data-midiChannel="1" data-cclsb="14"/>
+                        <label for="ENVType-Loop">Loop</label>
+                        <input
+                            type="radio" name="ENVType" value="127"
+                            class="midicctotal" id="ENVType-Off"
+                            data-midiChannel="1" data-cclsb="14"/>
+                        <label for="ENVType-Off">Off</label>
+                    </div>
+                    <label for="ENVAttack">Envelope Attack (CC 16)</label>
+                    <input
+                        class="midiccparam" id="ENVAttack"
+                        data-midiChannel="1" data-cclsb="16"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range">
+                    </div>
+                <div class="controller">
+                    <label for="ENVRelease">Envelope Release (CC 19)</label>
+                    <input
+                        class="midiccparam" id="ENVRelease"
+                        data-midiChannel="1" data-cclsb="19"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range">
+                    </div>
+            </div>
+            <div class="controlitemgroup">
+                <h3>LFO Settings</h3>
+                    <div class="controller">
+                        <label for="LFORate">LFO Rate (CC 24)</label>
+                        <input
+                            class="midiccparam" id="LFORate"
+                            data-midiChannel="1" data-cclsb="24"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range">
+                        </div>
+                        <label for="LFODepth">LFO Depth (CC 26)</label>
+                        <input
+                            class="midiccparam" id="LFORate"
+                            data-midiChannel="1" data-cclsb="26"
+                            data-displayvaluefunc="hundred"
+                            max="127" min="0" type="range">
+                        </div>
+                    </div>
+    </div>
+    <!-- END: Synth Settings-->
+
+    <!-- BEGIN: Effects Settings-->
+    <div class="controlpanel">
+        <h2>Effects Settings</h2>
+        <div class="controlflexlayout">
+            <div class="controlitemgroup">
+                <h3>Modulation</h3>
+                <div class="radiogroup">
+                    <span>Modulation Type (CC 88):</span>
+                    <input
+                        type="radio" name="MODType" value="0" checked
+                        class="midicctotal" id="MODType-OFF"
+                        data-midiChannel="1" data-cclsb="88"/>
+                    <label for="MODType-OFF">Off</label>
+                    <input
+                        type="radio" name="MODType" value="25" checked
+                        class="midicctotal" id="MODType-Chorus"
+                        data-midiChannel="1" data-cclsb="88"/>
+                    <label for="MODType-Chorus">Chorus</label>
+                    <input
+                        type="radio" name="MODType" value="50" checked
+                        class="midicctotal" id="MODType-Ens"
+                        data-midiChannel="1" data-cclsb="88"/>
+                    <label for="MODType-Ens">Ensemble</label>
+                    <input
+                        type="radio" name="MODType" value="75" checked
+                        class="midicctotal" id="MODType-Phaser"
+                        data-midiChannel="1" data-cclsb="88"/>
+                    <label for="MODType-Phaser">Phaser</label>
+                    <input
+                        type="radio" name="MODType" value="100" checked
+                        class="midicctotal" id="MODType-Flanger"
+                        data-midiChannel="1" data-cclsb="88"/>
+                    <label for="MODType-Flanger">Flanger</label>
+                </div>
+                <div class="controller">
+                    <label for="MODTime">Modulation Time (CC 28)</label>
+                    <input
+                        class="midiccparam" id="MODTime"
+                        data-midiChannel="1" data-cclsb="28"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range">
+                </div>
+                <div class="controller">
+                    <label for="MODDepth">Modulation Depth (CC 29)</label>
+                    <input
+                        class="midiccparam" id="MODDepth"
+                        data-midiChannel="1" data-cclsb="29"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range">
+                </div>
+            </div>
+            <div class="controlitemgroup">
+                <h3>Tremolo</h3>
+                <div class="controller">
+                    <label for="TREMDepth">Tremolo Depth (CC 20)</label>
+                    <input
+                        class="midiccparam" id="TREMDepth"
+                        data-midiChannel="1" data-cclsb="20"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range">
+                </div>
+                <div class="controller">
+                    <label for="TREMRate">Tremolo Rate (CC 21)</label>
+                    <input
+                        class="midiccparam" id="TREMRate"
+                        data-midiChannel="1" data-cclsb="21"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range">
+                </div>
+            </div>
+            <div class="controlitemgroup">
+                <h3>Delay</h3>
+                <div class="radiogroup">
+                    <span>Delay Type (CC 89):</span>
+                    <input
+                        type="radio" name="DELType" value="0" checked
+                        class="midicctotal" id="DELType-OFF"
+                        data-midiChannel="1" data-cclsb="89"/>
+                    <label for="DELType-OFF">Off</label>
+                    <input
+                        type="radio" name="DELType" value="21" checked
+                        class="midicctotal" id="DELType-Stereo"
+                        data-midiChannel="1" data-cclsb="89"/>
+                    <label for="DELType-Stereo">Stereo</label>
+                    <input
+                        type="radio" name="DELType" value="42" checked
+                        class="midicctotal" id="DELType-Mono"
+                        data-midiChannel="1" data-cclsb="89"/>
+                    <label for="DELType-Mono">Mono</label>
+                    <input
+                        type="radio" name="DELType" value="63" checked
+                        class="midicctotal" id="DELType-PingPong"
+                        data-midiChannel="1" data-cclsb="89"/>
+                    <label for="DELType-PingPong">Ping Pong</label>
+                    <input
+                        type="radio" name="DELType" value="84" checked
+                        class="midicctotal" id="DELType-HighPass"
+                        data-midiChannel="1" data-cclsb="89"/>
+                    <label for="DELType-HighPass">High Pass</label>
+                    <input
+                        type="radio" name="DELType" value="127" checked
+                        class="midicctotal" id="DELType-Tape"
+                        data-midiChannel="1" data-cclsb="89"/>
+                    <label for="DELType-Tape">Tape</label>
+                </div>
+                <div class="controller">
+                    <label for="DELTime">Delay Time (CC 30)</label>
+                    <input
+                        class="midiccparam" id="DELTime"
+                        data-midiChannel="1" data-cclsb="30"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range">
+                </div>
+                <div class="controller">
+                    <label for="DELDepth">Delay Depth (CC 31)</label>
+                    <input
+                        class="midiccparam" id="DELDepth"
+                        data-midiChannel="1" data-cclsb="31"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range">
+                </div>
+                <div class="controller">
+                    <label for="DELMix">Delay Mix (CC 32)</label>
+                    <input
+                        class="midiccparam" id="DELMix"
+                        data-midiChannel="1" data-cclsb="32"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range">
+                </div>
+            </div>
+            <div class="controlitemgroup">
+                <h3>Reverb</h3>
+                <div class="radiogroup">
+                    <span>Reverb Type (CC 90):</span>
+                    <input
+                        type="radio" name="REVType" value="0" checked
+                        class="midicctotal" id="REVType-OFF"
+                        data-midiChannel="1" data-cclsb="90"/>
+                    <label for="REVType-OFF">Off</label>
+                    <input
+                        type="radio" name="REVType" value="21" checked
+                        class="midicctotal" id="REVType-Hall"
+                        data-midiChannel="1" data-cclsb="90"/>
+                    <label for="REVType-Hall">Hall</label>
+                    <input
+                        type="radio" name="REVType" value="42" checked
+                        class="midicctotal" id="REVType-Plate"
+                        data-midiChannel="1" data-cclsb="90"/>
+                    <label for="REVType-Plate">Plate</label>
+                    <input
+                        type="radio" name="REVType" value="63" checked
+                        class="midicctotal" id="REVType-Space"
+                        data-midiChannel="1" data-cclsb="90"/>
+                    <label for="REVType-Space">Space</label>
+                    <input
+                        type="radio" name="REVType" value="84" checked
+                        class="midicctotal" id="REVType-Riser"
+                        data-midiChannel="1" data-cclsb="90"/>
+                    <label for="REVType-Riser">Riser</label>
+                    <input
+                        type="radio" name="REVType" value="127" checked
+                        class="midicctotal" id="REVType-Submarine"
+                        data-midiChannel="1" data-cclsb="90"/>
+                    <label for="REVType-Submarine">Submarine</label>
+                </div>
+                <div class="controller">
+                    <label for="REVTime">Reverb Time (CC 34)</label>
+                    <input
+                        class="midiccparam" id="REVTime"
+                        data-midiChannel="1" data-cclsb="34"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range">
+                </div>
+                <div class="controller">
+                    <label for="REVDepth">Reverb Depth (CC 35)</label>
+                    <input
+                        class="midiccparam" id="REVDepth"
+                        data-midiChannel="1" data-cclsb="35"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range">
+                </div>
+                <div class="controller">
+                    <label for="REVMix">Reverb Mix (CC 36)</label>
+                    <input
+                        class="midiccparam" id="REVMix"
+                        data-midiChannel="1" data-cclsb="36"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END: Effects Settings-->
+
+    <!-- BEGIN: Arpeggio Settings-->
+    <div class="controlpanel">
+        <h2>Arpeggio Settings</h2>
+        <div class="controlflexlayout">
+            <div class="controlitemgroup">
+                <div class="radiogroup">
+                    <span>Arpeggio Pattern (CC 117):</span></br>
+                    <input
+                        type="radio" name="ARPPATT" value="0" checked
+                        class="midicctotal" id="ARPPATT-Up"
+                        data-midiChannel="1" data-cclsb="117"/>
+                    <label for="ARPPATT-Up">Up</label></br>
+                    <input
+                        type="radio" name="ARPPATT" value="12" checked
+                        class="midicctotal" id="ARPPATT-Down"
+                        data-midiChannel="1" data-cclsb="117"/>
+                    <label for="ARPPATT-Down">Down</label></br>
+                    <input
+                        type="radio" name="ARPPATT" value="24" checked
+                        class="midicctotal" id="ARPPATT-Up-Down"
+                        data-midiChannel="1" data-cclsb="117"/>
+                    <label for="ARPPATT-Up-Down">Up-Down</label></br>
+                    <input
+                        type="radio" name="ARPPATT" value="36" checked
+                        class="midicctotal" id="ARPPATT-Down-Up"
+                        data-midiChannel="1" data-cclsb="117"/>
+                    <label for="ARPPATT-Down-Up">Down-Up</label></br>
+                    <input
+                        type="radio" name="ARPPATT" value="48" checked
+                        class="midicctotal" id="ARPPATT-Conv"
+                        data-midiChannel="1" data-cclsb="117"/>
+                    <label for="ARPPATT-Conv">Convergent</label></br>
+                    <input
+                        type="radio" name="ARPPATT" value="60" checked
+                        class="midicctotal" id="ARPPATT-Div"
+                        data-midiChannel="1" data-cclsb="117"/>
+                    <label for="ARPPATT-Div">Divergent</label></br>
+                    <input
+                        type="radio" name="ARPPATT" value="72" checked
+                        class="midicctotal" id="ARPPATT-Con-Div"
+                        data-midiChannel="1" data-cclsb="117"/>
+                    <label for="ARPPATT-Con-Div">Convergent-Divergent</label></br>
+                    <input
+                        type="radio" name="ARPPATT" value="84" checked
+                        class="midicctotal" id="ARPPATT-Div-Con"
+                        data-midiChannel="1" data-cclsb="117"/>
+                    <label for="ARPPATT-Div-Con">Divergent-Convergent</label></br>
+                    <input
+                        type="radio" name="ARPPATT" value="96" checked
+                        class="midicctotal" id="ARPPATT-Rand"
+                        data-midiChannel="1" data-cclsb="117"/>
+                    <label for="ARPPATT-Rand">Random</label></br>
+                    <input
+                        type="radio" name="ARPPATT" value="127" checked
+                        class="midicctotal" id="ARPPATT-Stoch"
+                        data-midiChannel="1" data-cclsb="117"/>
+                    <label for="ARPPATT-Stoch">Stochastic</label>
+                </div>
+            </div>
+            <div class="controlitemgroup">
+                <div class="radiogroup">
+                    <span>Arpeggio Intervals (CC 118):</span></br>
+                    <input
+                        type="radio" name="ARPINT" value="0" checked
+                        class="midicctotal" id="ARPINT-Oct"
+                        data-midiChannel="1" data-cclsb="118"/>
+                    <label for="ARPINT-Oct">Oct</label></br>
+                    <input
+                        type="radio" name="ARPINT" value="21" checked
+                        class="midicctotal" id="ARPINT-Maj"
+                        data-midiChannel="1" data-cclsb="118"/>
+                    <label for="ARPINT-Maj">Major</label></br>
+                    <input
+                        type="radio" name="ARPINT" value="42" checked
+                        class="midicctotal" id="ARPINT-Sus"
+                        data-midiChannel="1" data-cclsb="118"/>
+                    <label for="ARPINT-Sus">Sustain</label></br>
+                    <input
+                        type="radio" name="ARPINT" value="63" checked
+                        class="midicctotal" id="ARPINT-Aug"
+                        data-midiChannel="1" data-cclsb="118"/>
+                    <label for="ARPINT-Aug">Augmented</label></br>
+                    <input
+                        type="radio" name="ARPINT" value="84" checked
+                        class="midicctotal" id="ARPINT-Minor"
+                        data-midiChannel="1" data-cclsb="118"/>
+                    <label for="ARPINT-Minor">Minor</label></br>
+                    <input
+                        type="radio" name="ARPINT" value="127" checked
+                        class="midicctotal" id="ARPINT-Dim"
+                        data-midiChannel="1" data-cclsb="118"/>
+                    <label for="ARPINT-Dim">Diminished</label>
+                </div>
+            </div>
+            <div class="controlitemgroup">
+                <div class="controller">
+                    <label for="ARPLeng">Arpeggio Length (CC 119)</label>
+                    <input
+                        class="midiccparam" id="ARPLeng"
+                        data-midiChannel="1" data-cclsb="119"
+                        data-displayvaluefunc="hundred"
+                        max="127" min="0" type="range">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--END: Arpeggio Settings-->
+
+<div id="ccParameterDisplay">100</div>
+</body>
+</html>
