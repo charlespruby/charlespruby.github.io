@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>720 Sound Demo Comparator (Complete Dependencies)</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h2 { margin-top: 0; }
+        .controls { margin-bottom: 20px; padding: 15px; border: 1px solid #ccc; background-color: #f4f4f4; border-radius: 5px; display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
+        .controls div { display: flex; align-items: flex-start; flex-direction: column; }
+        .controls label { font-weight: bold; margin-bottom: 5px; white-space: nowrap; }
+        .player-container { margin-top: 20px; }
+        #audio-player { width: 100%; max-width: 600px; }
+        /* Style for disabled/empty selects to make it clear */
+        select:disabled { background-color: #e0e0e0; }
+    </style>
+</head>
+<body>
+
+    <h1>720 Sound Demo Comparator</h1>
+    <p>Select the variables below to switch between the demos. Options for Filter Mode, H/S Resonance, and Distortion are automatically restricted by the Filter selection.</p>
+
+    <div class="controls">
+        <div>
+            <label for="varA">Sound Source (A):</label>
+            <select id="varA"></select>
+        </div>
+
+        <div>
+            <label for="varB">Filter (B):</label>
+            <select id="varB"></select>
+        </div>
+
+        <div>
+            <label for="varC">Resonance (C):</label>
+            <select id="varC"></select>
+        </div>
+
+        <div>
+            <label for="varD">Filter Mode (D):</label>
+            <select id="varD"></select>
+        </div>
+        
+        <div>
+            <label for="varE">H/S Resonance (E):</label>
+            <select id="varE"></select>
+        </div>
+
+        <div>
+            <label for="varF">Distortion (F):</label>
+            <select id="varF"></select>
+        </div>
+    </div>
+
+    <div class="player-container">
+        <h2>Currently Playing: <span id="current-file-name"></span></h2>
+            <audio id="audio-player" controls preload="auto" loop>
+            <source id="audio-source" src="" type="audio/mpeg">
+            Your browser does not support the audio element.
+            </audio>
+    </div>
+
+    <script>
+        // --- Configuration ---
+        const DEMOS_DIR = 'audio/';
+        const FILE_EXTENSION = '.mp3';
+
+        // Configuration for all 6 variables with custom options defined.
+        const VAR_CONFIG = [
+            { id: 'varA', label: 'A', count: 2, name: 'Sound source',
+                options: ['Scale','White Noise'] },
+            { id: 'varB', label: 'B', count: 6, name: 'Filter', 
+                options: ['MS-20', 'Diode', 'Grunge', 'Nyle', 'SV Filter', 'Wasp'] },
+            { id: 'varC', label: 'C', count: 5, name: 'Resonance', 
+                options: ['0%', '25%', '50%', '75%', '100%'] },
+            { id: 'varD', label: 'D', count: 3, name: 'Filter mode', 
+                options: ['Low Pass', 'Band Pass', 'High Pass'] },
+            { id: 'varE', label: 'E', count: 2, name: 'H/S resonance', 
+                options: ['Hard', 'Soft'] },
+            { id: 'varF', label: 'F', count: 2, name: 'Distortion', 
+                options: ['Off', 'On'] }
+        ];
+
+        // --- DEPENDENCY RULES (UPDATED BASED ON USER INPUT) ---
+        
+        // 1. Filter (B) -> Filter Mode (D)
+        const FILTER_MODE_DEPENDENCIES = {
+            '1': [1, 3],    // MS-20 allows D1 (Low Pass), D3 (High Pass)
+            '2': [1],       // Diode allows D1 (Low Pass)
+            '3': [1, 2],    // Grunge allows D1 (Low Pass), D2 (Band Pass)
+            '4': [1, 2, 3], // Nyle allows D1, D2, D3 (All Modes)
+            '5': [1, 2, 3], // SV Filter allows D1, D2, D3 (All Modes)
+            '6': [1, 2, 3]  // Wasp allows D1, D2, D3 (All Modes)
+        };
+        
+        // 2. Filter (B) -> H/S Resonance (E)
+        const HS_RESONANCE_DEPENDENCIES = {
+            '1': [],        // MS-20 allows neither E1 nor E2
+            '2': [],        // Diode allows neither E1 nor E2
+            '3': [1, 2],    // Grunge allows E1 (Hard), E2 (Soft)
+            '4': [],        // Nyle allows neither E1 nor E2
+            '5': [],        // SV Filter allows neither E1 nor E2
+            '6': [],        // Wasp allows neither E1 nor E2
+        };
+
+        // 3. Filter (B) -> Distortion (F)
+        const DISTORTION_DEPENDENCIES = {
+            '1': [],        // MS-20 allows neither F1 nor F2
+            '2': [],        // Diode allows neither F1 nor F2
+            '3': [1, 2],    // Grunge allows F1 (Off), F2 (On)
+            '4': [],        // Nyle allows neither F1 nor F2
+            '5': [],        // SV Filter allows neither F1 nor F2
+            '6': [],        // Wasp allows neither F1 nor F2
+        };
+        // -------------------------
+
+        // --- DOM Elements & State ---
+        const audioPlayer = document.getElementById('audio-player');
+        const audioSource = document.getElementById('audio-source');
+        const fileNameDisplay = document.getElementById('current-file-name');
+        
+        let isPlaying = false;
+        let currentTime = 0;
+        
+        // --- Logic Functions ---
+
+        /**
+         * Populates a select element with options, applying dependencies and disabling if necessary.
+         */
+        function populateSelect(selectElement, config, allowedValues) {
+            const oldValue = selectElement.value;
+            selectElement.innerHTML = '';
+            
+            for (let i = 1; i <= config.count; i++) {
+                // Check dependency constraints
+                if (allowedValues && !allowedValues.includes(i)) {
+                    continue; 
+                }
+
+                const option = document.createElement('option');
+                option.value = i; 
+                
+                if (config.options && config.options[i - 1]) {
+                    option.textContent = config.options[i - 1]; 
+                } else {
+                    option.textContent = config.label + i;
+                }
+                
+                selectElement.appendChild(option);
+            }
+            
+            // Set disable state and selection based on results
+            if (selectElement.options.length === 0) {
+                // Add placeholder option if no options are allowed
+                const placeholder = document.createElement('option');
+                placeholder.textContent = '(Unavailable)';
+                placeholder.value = '';
+                selectElement.appendChild(placeholder);
+                selectElement.disabled = true;
+                selectElement.value = ''; // Ensure an empty value is used for filename generation
+            } else {
+                selectElement.disabled = false;
+                // Try to re-select the old value, or select the first option
+                if (selectElement.querySelector(`option[value="${oldValue}"]`)) {
+                    selectElement.value = oldValue;
+                } else {
+                    selectElement.selectedIndex = 0;
+                }
+            }
+        }
+        
+        /**
+         * Runs when Filter (B) changes, updating D, E, and F options.
+         */
+        function updateDependentDropdowns() {
+            const filterBSelect = document.getElementById('varB');
+            const selectedFilterBValue = filterBSelect.value;
+            
+            // --- Update Filter Mode (D) ---
+            const configD = VAR_CONFIG.find(c => c.id === 'varD');
+            const allowedDValues = FILTER_MODE_DEPENDENCIES[selectedFilterBValue];
+            populateSelect(document.getElementById('varD'), configD, allowedDValues);
+            
+            // --- Update H/S Resonance (E) ---
+            const configE = VAR_CONFIG.find(c => c.id === 'varE');
+            const allowedEValues = HS_RESONANCE_DEPENDENCIES[selectedFilterBValue];
+            populateSelect(document.getElementById('varE'), configE, allowedEValues);
+            
+            // --- Update Distortion (F) ---
+            const configF = VAR_CONFIG.find(c => c.id === 'varF');
+            const allowedFValues = DISTORTION_DEPENDENCIES[selectedFilterBValue];
+            populateSelect(document.getElementById('varF'), configF, allowedFValues);
+        }
+
+        /**
+         * Main handler for any variable change.
+         */
+        function handleVariableChange(event) {
+            // If the Filter (B) dropdown changed, update all dependent options
+            if (event && event.target.id === 'varB') {
+                updateDependentDropdowns();
+            }
+            
+            // 1. Save current playback state
+            isPlaying = !audioPlayer.paused;
+            currentTime = audioPlayer.currentTime;
+
+            // 2. Get the new file details
+            const newFile = getFilename();
+
+            // 3. Update the display and audio source
+            fileNameDisplay.textContent = newFile.name;
+            audioSource.src = newFile.path;
+
+            // 4. Reload the audio element
+            audioPlayer.load();
+
+            // 5. Restore playback position and state
+            audioPlayer.addEventListener('loadedmetadata', function restoreState() {
+                if (currentTime < audioPlayer.duration) {
+                    audioPlayer.currentTime = currentTime;
+                } else {
+                    audioPlayer.currentTime = 0;
+                }
+
+                if (isPlaying) {
+                    audioPlayer.play().catch(error => {
+                        console.warn("Autoplay was prevented.", error);
+                    });
+                }
+                
+                audioPlayer.removeEventListener('loadedmetadata', restoreState);
+            });
+        }
+
+        /**
+         * Initializes the page: populates dropdowns, sets up dependencies, loads initial file.
+         */
+        function initialize() {
+            // 1. Populate all independent dropdowns and attach listeners
+            VAR_CONFIG.forEach(cfg => {
+                const selectElement = document.getElementById(cfg.id);
+                
+                // D, E, F are dependent and handled by updateDependentDropdowns()
+                if (cfg.id !== 'varD' && cfg.id !== 'varE' && cfg.id !== 'varF') {
+                    populateSelect(selectElement, cfg);
+                }
+                
+                selectElement.addEventListener('change', handleVariableChange);
+            });
+
+            // 2. Apply initial dependencies (updates D, E, F based on default B value)
+            updateDependentDropdowns();
+            
+            // 3. Set initial file path and load player
+            const initialFile = getFilename();
+            audioSource.src = initialFile.path;
+            fileNameDisplay.textContent = initialFile.name;
+            audioPlayer.load();
+        }
+
+        // Generates the filename based on the current selections.
+        function getFilename() {
+            // Ensure we use the numerical values from the selects (or empty string if disabled)
+            const values = VAR_CONFIG.map(cfg => document.getElementById(cfg.id).value || ''); 
+            
+            // Construct the parts of the filename
+            const parts = VAR_CONFIG.map((cfg, index) => `${cfg.label}${values[index]}`);
+            const filename = `demo_${parts.join('_')}${FILE_EXTENSION}`;
+            
+            return {
+                path: DEMOS_DIR + filename,
+                name: filename
+            };
+        }
+
+        // Run the main initialization function
+        initialize();
+
+    </script>
+</body>
+</html>
